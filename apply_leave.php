@@ -1,0 +1,2116 @@
+<?php
+require_once 'config/config.php';
+require_once 'includes/functions.php';
+require_once 'includes/EmailHelper.php';
+require_once __DIR__ . '/includes/notification_functions.php';
+
+// Require login to access this page
+requireLogin();
+
+// Only faculty, HOD, central admin, and admin can apply for leave
+if (!in_array($_SESSION['role'], ['faculty', 'hod', 'central_admin', 'admin'])) {
+    redirect(BASE_URL . 'unauthorized.php');
+}
+
+// Get leave types
+function getLeaveTypes() {
+    $conn = connectDB();
+    
+    $query = "SELECT type_id, type_name, description, default_balance 
+              FROM leave_types 
+              ORDER BY type_name";
+    
+    $result = $conn->query($query);
+    
+    $leaveTypes = [];
+    while ($row = $result->fetch_assoc()) {
+        $leaveTypes[] = $row;
+    }
+    
+    closeDB($conn);
+    
+    return $leaveTypes;
+}
+
+// Get faculty members for class adjustment
+function getFacultyMembers() {
+    $conn = connectDB();
+    $currentUserId = $_SESSION['user_id'];
+    $deptId = $_SESSION['dept_id'];
+    
+    $query = "SELECT user_id, first_name, last_name 
+              FROM users 
+              WHERE role_id = (SELECT role_id FROM roles WHERE role_name = 'faculty') 
+              AND dept_id = ? 
+              AND user_id != ? 
+              AND status = 'active'
+              ORDER BY first_name, last_name";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $deptId, $currentUserId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $faculty = [];
+    while ($row = $result->fetch_assoc()) {
+        $faculty[] = $row;
+    }
+    
+    $stmt->close();
+    closeDB($conn);
+    
+    return $faculty;
+}
+
+// Get user's leave balances
+function getUserLeaveBalances($userId) {
+    $conn = connectDB();
+    $currentYear = date('Y');
+    
+    $query = "SELECT lt.type_id, lt.type_name, lb.total_days, lb.used_days, (lb.total_days - lb.used_days) as remaining_days
+              FROM leave_types lt
+              LEFT JOIN leave_balances lb ON lt.type_id = lb.leave_type_id AND lb.user_id = ? AND lb.year = ?
+              ORDER BY lt.type_name";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $userId, $currentYear);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $balances = [];
+    while ($row = $result->fetch_assoc()) {
+        $balances[$row['type_id']] = $row;
+    }
+    
+    $stmt->close();
+    closeDB($conn);
+    
+    return $balances;
+}
+
+// Process form submission
+$error = '';
+$success = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $conn = connectDB();
+    if (!$conn) {
+        $error = "Database connection failed: " . mysqli_connect_error();
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => $error]);
+        exit;
+    }
+    
+    try {
+        // Check if this is a permission leave
+        $isPermission = isset($_POST['is_permission']) && $_POST['is_permission'] == 1;
+        
+        if ($isPermission) {
+            // Debug log
+            error_log("Processing permission leave submission");
+            error_log("POST data: " . print_r($_POST, true));
+            
+            // Handle permission leave
+            $permissionDate = $_POST['permission_date'];
+            $permissionSlot = $_POST['permission_slot'];
+            $reason = $_POST['reason'];
+            
+            // Validate permission date
+            if (empty($permissionDate)) {
+                throw new Exception('Please select a date for the permission.');
+            }
+            
+            // Debug log
+            error_log("Permission date: $permissionDate, Slot: $permissionSlot");
+            
+            // Set start and end dates to the same day for permission leave
+            $startDate = date('Y-m-d', strtotime($permissionDate));
+            $endDate = $startDate;
+            $totalDays = 0.5; // Half day for permission leave
+            
+            // Get permission leave type ID
+            $leaveTypeQuery = "SELECT type_id FROM leave_types WHERE type_name = 'permission_leave' LIMIT 1";
+            $result = $conn->query($leaveTypeQuery);
+            if ($result && $result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $leaveTypeId = $row['type_id'];
+                error_log("Found permission leave type ID: $leaveTypeId");
+            } else {
+                error_log("Permission leave type not found. SQL Error: " . $conn->error);
+                throw new Exception('Permission leave type not found in the system.');
+            }
+            
+            $userId = $_SESSION['user_id'];
+            
+            // Check if there's an existing leave application for the same period and slot
+            $query = "SELECT COUNT(*) as count FROM leave_applications 
+                      WHERE user_id = ? 
+                      AND DATE(start_date) = DATE(?)
+                      AND permission_slot = ?
+                      AND status != 'rejected'";
+            
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("iss", $userId, $startDate, $permissionSlot);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            
+            if ($row['count'] > 0) {
+                throw new Exception('You already have a permission leave application for this date and slot.');
+            }
+            
+            // Begin transaction
+            $conn->begin_transaction();
+            
+            // Insert permission leave application
+            $query = "INSERT INTO leave_applications 
+                      (user_id, leave_type_id, start_date, end_date, total_days, reason, is_permission, permission_slot, status) 
+                      VALUES (?, ?, ?, ?, ?, ?, 1, ?, 'pending')";
+            
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("iissdss", $userId, $leaveTypeId, $startDate, $endDate, $totalDays, $reason, $permissionSlot);
+            $stmt->execute();
+            
+            $applicationId = $conn->insert_id;
+            
+            // Handle class adjustments if provided
+            if (isset($_POST['adjustment_dates'])) {
+                $adjustmentDates = $_POST['adjustment_dates'];
+                $adjustmentTimes = $_POST['adjustment_times'] ?? [];
+                $adjustmentSubjects = $_POST['adjustment_subjects'] ?? [];
+                $adjustmentFaculty = $_POST['adjustment_faculty'] ?? [];
+                
+                $adjustmentQuery = "INSERT INTO class_adjustments 
+                                   (application_id, class_date, class_time, subject, adjusted_by, status) 
+                                   VALUES (?, ?, ?, ?, ?, 'pending')";
+                $stmt = $conn->prepare($adjustmentQuery);
+                
+                foreach ($adjustmentDates as $index => $date) {
+                    if (!empty($date) && !empty($adjustmentTimes[$index]) && !empty($adjustmentSubjects[$index]) && !empty($adjustmentFaculty[$index])) {
+                        $classDate = date('Y-m-d', strtotime($date));
+                        $time = $adjustmentTimes[$index];
+                        $subject = $adjustmentSubjects[$index];
+                        $facultyId = $adjustmentFaculty[$index];
+                        
+                        $stmt->bind_param("isssi", $applicationId, $classDate, $time, $subject, $facultyId);
+                        $stmt->execute();
+                    }
+                }
+            }
+            
+            // Send notification to HOD
+            $hodQuery = "SELECT u.user_id, u.email FROM users u 
+                         JOIN roles r ON u.role_id = r.role_id 
+                         WHERE r.role_name = 'hod' AND u.dept_id = ?";
+            
+            $stmt = $conn->prepare($hodQuery);
+            $stmt->bind_param("i", $_SESSION['dept_id']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            if ($row = $result->fetch_assoc()) {
+                $hodId = $row['user_id'];
+                $hodEmail = $row['email'];
+                
+                // Format notification message
+                $slotText = ($permissionSlot == 'morning') ? 'Morning (8:40 AM – 10:20 AM)' : 'Evening (3:20 PM – 5:00 PM)';
+                $notificationTitle = 'New Permission Leave Application';
+                $notificationMessage = $_SESSION['name'] . ' has applied for permission leave on ' . 
+                                    date('d-m-Y', strtotime($startDate)) . ' (' . $slotText . '). Please review.';
+                
+                // Insert notification for HOD
+                $query = "INSERT INTO notifications (user_id, title, message) VALUES (?, ?, ?)";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("iss", $hodId, $notificationTitle, $notificationMessage);
+                $stmt->execute();
+                
+                // Send email notification
+                $emailHelper = new EmailHelper();
+                $emailHelper->sendLeaveAppliedEmail(
+                    $hodEmail,
+                    $applicationId,
+                    'Permission Leave',
+                    $startDate,
+                    $endDate,
+                    $reason,
+                    true,
+                    $permissionSlot
+                );
+            }
+            
+            $conn->commit();
+            
+            // Return JSON response for AJAX request
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Permission leave application submitted successfully.']);
+            exit;
+            
+        } else {
+            // Handle regular leave
+            $leaveTypeId = $_POST['leave_type_id'];
+            $dateRange = $_POST['date_range'];
+            $reason = $_POST['reason'];
+            $totalDays = floatval($_POST['total_days']);
+            
+            // Check if it's a casual leave type (assuming IDs 2 and 3 are for casual leave)
+            $isCasualLeave = ($leaveTypeId == '2' || $leaveTypeId == '3'); // Casual leave prior or emergency
+            
+            if ($isCasualLeave && strpos($dateRange, ',') !== false) {
+                // For casual leave with multiple individual dates
+                $individualDates = explode(',', $dateRange);
+                $startDate = date('Y-m-d', strtotime($individualDates[0])); // First date as start date
+                $endDate = date('Y-m-d', strtotime($individualDates[count($individualDates)-1])); // Last date as end date
+            } else {
+                // For other leave types or casual leave with date range
+                $dates = explode(' to ', $dateRange);
+                $startDate = date('Y-m-d', strtotime($dates[0]));
+                // Check if second date exists before using it
+                if (isset($dates[1])) {
+                    $endDate = date('Y-m-d', strtotime($dates[1]));
+                } else {
+                    // If no end date is provided, use the start date
+                    $endDate = $startDate;
+                }
+            }
+        
+            // Validate input
+            if (empty($leaveTypeId) || empty($dateRange) || empty($reason) || $totalDays <= 0) {
+                throw new Exception('Please fill in all required fields.');
+            }
+        
+            $userId = $_SESSION['user_id'];
+            
+            // Check if there's an existing leave application for the same period
+            $query = "SELECT COUNT(*) as count FROM leave_applications 
+                      WHERE user_id = ? 
+                      AND DATE(start_date) <= DATE(?)
+                      AND DATE(end_date) >= DATE(?)
+                      AND status != 'rejected'";
+            
+            $stmt = $conn->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Failed to prepare statement: " . $conn->error);
+            }
+            
+            $stmt->bind_param("iss", $userId, $endDate, $startDate);
+            if (!$stmt->execute()) {
+                throw new Exception("Failed to execute query: " . $stmt->error);
+            }
+            
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            
+            if ($row['count'] > 0) {
+                throw new Exception('You already have a leave application for this period.');
+            }
+        
+            // Check leave balance (skip for permission leave as it has its own balance)
+            if (!$isPermission) {
+                $balances = getUserLeaveBalances($userId);
+                
+                if (isset($balances[$leaveTypeId]) && $balances[$leaveTypeId]['remaining_days'] < $totalDays) {
+                    throw new Exception('You do not have enough leave balance for this leave type.');
+                }
+            }
+        
+        // Begin transaction
+        $conn->begin_transaction();
+        
+        // Insert leave application
+        $query = "INSERT INTO leave_applications (user_id, leave_type_id, start_date, end_date, total_days, reason, is_permission, permission_slot) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $isPermissionInt = $isPermission ? 1 : 0;
+        $permissionSlotValue = $isPermission ? $permissionSlot : null;
+        
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("iissdiss", $userId, $leaveTypeId, $startDate, $endDate, $totalDays, $reason, $isPermissionInt, $permissionSlotValue);
+        $stmt->execute();
+        
+        // Get leave application ID
+        $applicationId = $conn->insert_id;
+        
+        // Handle class adjustments for permission leave
+        if ($isPermission && isset($_POST['adjustment_dates'])) {
+            $adjustmentDates = $_POST['adjustment_dates'];
+            $adjustmentTimes = $_POST['adjustment_times'] ?? [];
+            $adjustmentSubjects = $_POST['adjustment_subjects'] ?? [];
+            $adjustmentFaculty = $_POST['adjustment_faculty'] ?? [];
+            
+            $adjustmentQuery = "INSERT INTO class_adjustments 
+                               (application_id, class_date, class_time, subject, adjusted_by, status) 
+                               VALUES (?, ?, ?, ?, ?, 'pending')";
+            $stmt = $conn->prepare($adjustmentQuery);
+            
+            foreach ($adjustmentDates as $index => $date) {
+                if (!empty($date) && !empty($adjustmentTimes[$index]) && !empty($adjustmentSubjects[$index]) && !empty($adjustmentFaculty[$index])) {
+                    $classDate = date('Y-m-d', strtotime($date));
+                    $time = $adjustmentTimes[$index];
+                    $subject = $adjustmentSubjects[$index];
+                    $facultyId = $adjustmentFaculty[$index];
+                    
+                    $stmt->bind_param("isssi", $applicationId, $classDate, $time, $subject, $facultyId);
+                    $stmt->execute();
+                }
+            }
+        }
+        
+        // Get leave type name for notifications
+        $leaveTypeQuery = "SELECT type_name FROM leave_types WHERE type_id = ?";
+        $leaveTypeStmt = $conn->prepare($leaveTypeQuery);
+        $leaveTypeStmt->bind_param("i", $leaveTypeId);
+        $leaveTypeStmt->execute();
+        $leaveTypeResult = $leaveTypeStmt->get_result();
+        $leaveType = $leaveTypeResult->fetch_assoc();
+        
+        // Send notification to HOD and email
+        $hodQuery = "SELECT u.user_id, u.email FROM users u 
+                     JOIN roles r ON u.role_id = r.role_id 
+                     WHERE r.role_name = 'hod' AND u.dept_id = ?";
+        
+        $stmt = $conn->prepare($hodQuery);
+        $stmt->bind_param("i", $_SESSION['dept_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($row = $result->fetch_assoc()) {
+            $hodId = $row['user_id'];
+            $hodEmail = $row['email'];
+            
+            // Format notification message based on leave type
+            if ($isPermission) {
+                $slotText = ($permissionSlot == 'morning') ? 'Morning (8:40 AM – 10:20 AM)' : 'Evening (3:20 PM – 5:00 PM)';
+                $notificationTitle = 'New Permission Leave Application';
+                $notificationMessage = $_SESSION['name'] . ' has applied for permission leave on ' . 
+                                    date('d-m-Y', strtotime($startDate)) . ' (' . $slotText . '). Please review.';
+            } else {
+                $notificationTitle = 'New Leave Application';
+                $notificationMessage = $_SESSION['name'] . ' has applied for leave from ' . 
+                                    date('d-m-Y', strtotime($startDate)) . ' to ' . 
+                                    date('d-m-Y', strtotime($endDate)) . '. Please review.';
+            }
+            
+            $query = "INSERT INTO notifications (user_id, title, message) VALUES (?, ?, ?)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("iss", $hodId, $notificationTitle, $notificationMessage);
+            $stmt->execute();
+            
+            // Send email notification
+            $emailHelper = new EmailHelper();
+            $emailHelper->sendLeaveAppliedEmail(
+                $hodEmail,
+                $applicationId,
+                $leaveType['type_name'],
+                $startDate,
+                $endDate,
+                $reason,
+                $isPermission,
+                $permissionSlot ?? null
+            );
+        }
+        
+        // Special notifications for specific leave types
+        if ($isPermission) {
+            // For permission leave, we'll follow the same flow as regular leaves
+            // The HOD will review first, then admin if needed based on leave type settings
+            // No special handling needed here as the initial HOD notification is already sent
+        } else if ($leaveTypeId == 4) { // Medical leave
+            // Notify admin and send email
+            $adminQuery = "SELECT u.user_id, u.email FROM users u 
+                          JOIN roles r ON u.role_id = r.role_id 
+                          WHERE r.role_name = 'admin' LIMIT 1";
+            
+            $result = $conn->query($adminQuery);
+            
+            if ($row = $result->fetch_assoc()) {
+                $adminId = $row['user_id'];
+                $adminEmail = $row['email'];
+                
+                // Send database notification
+                $notificationTitle = 'Medical Leave Application';
+                $notificationMessage = $_SESSION['name'] . ' has applied for medical leave from ' . date('d-m-Y', strtotime($startDate)) . ' to ' . date('d-m-Y', strtotime($endDate)) . '.';
+                
+                $query = "INSERT INTO notifications (user_id, title, message) VALUES (?, ?, ?)";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("iss", $adminId, $notificationTitle, $notificationMessage);
+                $stmt->execute();
+                
+                // Send email notification
+                $emailHelper = new EmailHelper();
+                $emailHelper->sendLeaveAppliedEmail(
+                    $adminEmail,
+                    $applicationId,
+                    $leaveType['type_name'],
+                    $startDate,
+                    $endDate,
+                    $reason,
+                    $isPermission,
+                    $permissionSlot ?? null
+                );
+            }
+        }
+        }
+
+        // Commit transaction
+        try {
+            $conn->commit();
+        } catch (Exception $e) {
+            // If commit fails, rollback
+            $conn->rollback();
+            throw new Exception("Transaction commit failed: " . $e->getMessage());
+        }
+        
+        // Set success message
+        $success = 'Leave application submitted successfully.';
+        
+        // Redirect to prevent form resubmission
+        setFlashMessage('success', $success);
+        redirect(BASE_URL . 'my_applications.php');
+    } catch (Exception $e) {
+        // Rollback transaction on error
+        if (isset($conn)) {
+            $conn->rollback();
+        }
+        $error = 'An error occurred: ' . $e->getMessage();
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => $error,
+            'error' => true
+        ]);
+        exit;
+    } finally {
+        if (isset($conn)) {
+            closeDB($conn);
+        }
+    }
+} // End of POST request handling
+
+// Get data for the form
+try {
+    $leaveTypes = getLeaveTypes();
+    $facultyMembers = getFacultyMembers();
+    $leaveBalances = getUserLeaveBalances($_SESSION['user_id']);
+} catch (Exception $e) {
+    $error = 'Error loading form data: ' . $e->getMessage();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Leave - <?php echo APP_TITLE; ?></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <?php include 'includes/header.php'; ?>
+    
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <?php include 'includes/sidebar.php'; ?>
+            
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Apply for Leave</h1>
+                </div>
+                
+                <?php if (!empty($error)): ?>
+                    <div class="alert alert-danger"><?php echo $error; ?></div>
+                <?php endif; ?>
+                
+                <?php if (!empty($success)): ?>
+                    <div class="alert alert-success"><?php echo $success; ?></div>
+                <?php endif; ?>
+                
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Apply for Leave</h5>
+                            <button type="button" class="btn btn-outline-primary" id="apply_permission_btn">
+                                <i class="fas fa-clock"></i> Apply for Permission Leave
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form id="leave_application_form" method="POST" action="" enctype="multipart/form-data" class="leave-form">
+                            <input type="hidden" name="is_permission" id="is_permission" value="0">
+                            <!-- Leave Type Section -->
+                            <div class="form-section">
+                                <h5 class="form-section-title">Leave Type</h5>
+                                
+                                <div class="form-group">
+                                    <label for="leave_type_id">Select Leave Type <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="leave_type_id" name="leave_type_id" required>
+                                        <option value="">-- Select Leave Type --</option>
+                                        <optgroup label="Casual Leave">
+                                            <?php foreach ($leaveTypes as $type): ?>
+                                                <?php if (strpos($type['type_name'], 'casual_leave') !== false): ?>
+                                                    <option value="<?php echo $type['type_id']; ?>" data-max-days="<?php echo $type['default_balance']; ?>" data-type="<?php echo $type['type_name']; ?>">
+                                                        <?php echo ucwords(str_replace('_', ' ', $type['type_name'])); ?>
+                                                        <?php if (isset($leaveBalances[$type['type_id']])): ?>
+                                                            (Balance: <?php echo $leaveBalances[$type['type_id']]['remaining_days']; ?> days)
+                                                        <?php endif; ?>
+                                                    </option>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </optgroup>
+                                        <optgroup label="Other Leave Types">
+                                            <?php foreach ($leaveTypes as $type): ?>
+                                                <?php if (strpos($type['type_name'], 'casual_leave') === false): ?>
+                                                    <option value="<?php echo $type['type_id']; ?>" data-max-days="<?php echo $type['default_balance']; ?>" data-type="<?php echo $type['type_name']; ?>">
+                                                        <?php echo ucwords(str_replace('_', ' ', $type['type_name'])); ?>
+                                                        <?php if (isset($leaveBalances[$type['type_id']])): ?>
+                                                            (Balance: <?php echo $leaveBalances[$type['type_id']]['remaining_days']; ?> days)
+                                                        <?php endif; ?>
+                                                    </option>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </optgroup>
+                                    </select>
+                                    <small class="form-text text-muted mt-2">
+                                        <strong>Note:</strong>
+                                        <ul class="mb-0 pl-3">
+                                            <li>Casual Leave (Prior): For planned absences with prior notice</li>
+                                            <li>Casual Leave (Emergency): For unexpected absences</li>
+                                            <li>Earned Leave: Accumulated based on service</li>
+                                            <li>Medical Leave: Requires supporting documents</li>
+                                            <li>Maternity Leave: Must be applied in advance</li>
+                                            <li>Academic/Study Leave: Requires central admin and admin approval</li>
+                                            <li>On Duty/Other Duty: For official assignments</li>
+                                            <li>Paid Leave: When all other leave balances are exhausted</li>
+                                        </ul>
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <!-- Leave Period Section -->
+                            <div class="form-section">
+                                <h5 class="form-section-title">Leave Period</h5>
+                                
+                                <!-- Casual Leave Date Picker (Multiple Individual Dates) -->
+                                <div id="casual_leave_container" style="display: none;">
+                                    <div class="form-group">
+                                        <label>Select Individual Dates <span class="text-danger">*</span></label>
+                                        <div id="casual_dates_container">
+                                            <div class="date-input-container mb-2">
+                                                <input type="text" class="form-control casual-date-picker" name="casual_dates[]" placeholder="Select date">
+                                                <button type="button" class="btn btn-sm btn-danger remove-date" style="display: none;"><i class="fas fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <button type="button" id="add_casual_date" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-plus"></i> Add Another Date
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Regular Leave Date Range Picker -->
+                                <div id="regular_leave_container">
+                                    <div class="form-group">
+                                        <label for="date_range">Leave Date Range <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control date-range-picker" id="date_range" name="date_range" placeholder="Select date range" required>
+                                        <small class="form-text text-muted">Select the start and end dates for your leave.</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="total_days">Total Days</label>
+                                    <input type="number" class="form-control" id="total_days" name="total_days" readonly>
+                                    <small class="form-text text-muted">This will be calculated automatically based on your selected date range.</small>
+                                </div>
+                            </div>
+                            
+                            <!-- Class Adjustment Section (for All Leave Types) -->
+                            <div class="form-section class-adjustment-section">
+                                <h5 class="form-section-title">Class Adjustments</h5>
+                                <p class="text-muted">Please provide details of classes that need to be adjusted during your leave period.</p>
+                                
+                                <div id="class_adjustments_container">
+                                    <!-- Class adjustment rows will be added here -->
+                                </div>
+                                
+                                <button type="button" id="add_class_adjustment" class="btn btn-sm btn-outline-primary mt-2">
+                                    <i class="fas fa-plus"></i> Add Class Adjustment
+                                </button>
+                                
+                                <div class="alert alert-info mt-3">
+                                    <i class="fas fa-info-circle mr-2"></i> <strong>Note:</strong> Please ensure that you have obtained consent from the faculty member who will be handling your class during your absence.
+                                </div>
+                            </div>
+                            
+                            <!-- Document Upload Section (for Medical Leave) -->
+                            <div class="form-section document-upload-section d-none">
+                                <h5 class="form-section-title">Supporting Documents</h5>
+                                
+                                <div class="form-group">
+                                    <label for="document" id="document-label">Upload Medical Certificate</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="document" name="document">
+                                        <label class="custom-file-label" for="document">Choose file</label>
+                                    </div>
+                                    <small class="form-text text-muted">Upload medical certificate or other supporting documents (PDF, JPG, PNG).</small>
+                                </div>
+                            </div>
+                            
+                            <!-- Reason Section -->
+                            <div class="form-section">
+                                <h5 class="form-section-title">Reason for Leave</h5>
+                                
+                                <div class="form-group">
+                                    <label for="reason">Reason <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="form-group text-center mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Submit Leave Application
+                                </button>
+                                <a href="<?php echo BASE_URL; ?>" class="btn btn-secondary ml-2">
+                                    <i class="fas fa-times"></i> Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Permission Leave Modal -->
+    <div class="modal fade" id="permissionLeaveModal" tabindex="-1" role="dialog" aria-labelledby="permissionLeaveModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="permissionLeaveModalLabel">Apply for Permission Leave</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="permission_leave_form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="permission_date">Date <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control datepicker" id="permission_date" name="permission_date" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Time Slot <span class="text-danger">*</span></label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="permission_slot" id="morning_slot" value="morning" required>
+                                        <label class="form-check-label" for="morning_slot">
+                                            8:40 AM – 10:20 AM (Morning)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="permission_slot" id="evening_slot" value="afternoon" required>
+                                        <label class="form-check-label" for="evening_slot">
+                                            3:20 PM – 5:00 PM (Evening)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="permission_reason">Reason <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="permission_reason" name="reason" rows="3" required></textarea>
+                        </div>
+                        <div id="permission_class_adjustments">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0">Class Adjustments</h6>
+                                <button type="button" id="add_permission_class_adjustment" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-plus"></i> Add Class Adjustment
+                                </button>
+                            </div>
+                            <div id="permission_class_adjustment_container">
+                                <!-- Class adjustment fields will be added here -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submit_permission_leave">Submit Permission</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Class Adjustment Template (Hidden) -->
+    <template id="class_adjustment_template">
+        <div class="class-adjustment-row mt-3 border rounded p-3 bg-light shadow-sm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0"><i class="fas fa-chalkboard-teacher mr-2"></i>Class <span class="badge badge-primary row-number">1</span></h6>
+                        <button type="button" class="btn btn-sm btn-outline-danger remove-class-adjustment">
+                            <i class="fas fa-times"></i> Remove
+                        </button>
+                    </div>
+                    <hr class="my-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-day mr-1"></i> Class Date</label>
+                        <input type="text" class="form-control class-date-picker" name="class_date[]" placeholder="Select date" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><i class="fas fa-user mr-1"></i> Adjusted With Faculty</label>
+                        <select class="form-control faculty-select" name="adjusted_faculty_id[]" required>
+                            <option value="">-- Search and select faculty --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row class-details-row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-graduation-cap mr-1"></i> Year <span class="text-danger">*</span></label>
+                        <select class="form-control" name="class_year[]" required>
+                            <option value="">Select Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-code-branch mr-1"></i> Branch <span class="text-danger">*</span></label>
+                        <select class="form-control" name="class_branch[]" required>
+                            <option value="">Select Branch</option>
+                            <option value="CSE">CSE</option>
+                            <option value="IT">IT</option>
+                            <option value="ECE">ECE</option>
+                            <option value="EEE">EEE</option>
+                            <option value="MECH">MECH</option>
+                            <option value="CIVIL">CIVIL</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-users mr-1"></i> Section <span class="text-danger">*</span></label>
+                        <select class="form-control" name="class_section[]" required>
+                            <option value="">Select Section</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-clock mr-1"></i> Time <span class="text-danger">*</span></label>
+                        <select class="form-control time-select" name="class_time[]" required>
+                            <option value="">Select Time</option>
+                            <option value="8:40 AM - 9:30 AM">8:40 AM - 9:30 AM</option>
+                            <option value="9:30 AM - 10:20 AM">9:30 AM - 10:20 AM</option>
+                            <option value="10:30 AM - 11:20 AM">10:30 AM - 11:20 AM</option>
+                            <option value="11:20 AM - 12:10 PM">11:20 AM - 12:10 PM</option>
+                            <option value="1:30 PM - 2:20 PM">1:30 PM - 2:20 PM</option>
+                            <option value="2:20 PM - 3:10 PM">2:20 PM - 3:10 PM</option>
+                            <option value="3:20 PM - 4:10 PM">3:20 PM - 4:10 PM</option>
+                            <option value="4:10 PM - 5:00 PM">4:10 PM - 5:00 PM</option>
+                            <option value="custom">Custom Time</option>
+                        </select>
+                        <input type="text" class="form-control mt-2 custom-time-input" name="custom_time[]" placeholder="Enter custom time (e.g., 9:00 AM - 10:00 AM)" style="display: none;">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-book mr-1"></i> Subject <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="class_subject[]" placeholder="Subject" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group mb-0">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input faculty-confirmation" id="faculty_confirmation_new" name="faculty_confirmation[]" required>
+                            <label class="custom-control-label" for="faculty_confirmation_new">
+                                <span class="text-danger">*</span> I confirm that I have obtained consent from the faculty member who will be handling my class
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Permission Class Adjustment Template (Hidden) -->
+    <template id="permission_class_adjustment_template">
+        <div class="class-adjustment-row mt-3 border rounded p-3 bg-light shadow-sm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0"><i class="fas fa-chalkboard-teacher mr-2"></i>Class <span class="badge badge-primary row-number">1</span></h6>
+                        <button type="button" class="btn btn-sm btn-outline-danger remove-permission-adjustment">
+                            <i class="fas fa-times"></i> Remove
+                        </button>
+                    </div>
+                    <hr class="my-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-day mr-1"></i> Class Date <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control permission-class-date" name="permission_adjustment_dates[]" placeholder="Select date" required>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-clock mr-1"></i> Time <span class="text-danger">*</span></label>
+                        <select class="form-control time-select" name="permission_adjustment_times[]" required>
+                            <option value="">Select Time</option>
+                            <option value="8:40 AM - 9:30 AM">8:40 AM - 9:30 AM</option>
+                            <option value="9:30 AM - 10:20 AM">9:30 AM - 10:20 AM</option>
+                            <option value="10:30 AM - 11:20 AM">10:30 AM - 11:20 AM</option>
+                            <option value="11:20 AM - 12:10 PM">11:20 AM - 12:10 PM</option>
+                            <option value="1:30 PM - 2:20 PM">1:30 PM - 2:20 PM</option>
+                            <option value="2:20 PM - 3:10 PM">2:20 PM - 3:10 PM</option>
+                            <option value="3:20 PM - 4:10 PM">3:20 PM - 4:10 PM</option>
+                            <option value="4:10 PM - 5:00 PM">4:10 PM - 5:00 PM</option>
+                            <option value="custom">Custom Time</option>
+                        </select>
+                        <input type="text" class="form-control mt-2 custom-time-input" name="permission_custom_time[]" placeholder="Enter custom time (e.g., 9:00 AM - 10:00 AM)" style="display: none;">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><i class="fas fa-user mr-1"></i> Adjusted With Faculty <span class="text-danger">*</span></label>
+                        <select class="form-control permission-faculty-select" name="permission_adjusted_faculty[]" required>
+                            <option value="">Search and select faculty</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-graduation-cap mr-1"></i> Year <span class="text-danger">*</span></label>
+                        <select class="form-control" name="permission_adjustment_years[]" required>
+                            <option value="">Select Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-code-branch mr-1"></i> Branch <span class="text-danger">*</span></label>
+                        <select class="form-control" name="permission_adjustment_branches[]" required>
+                            <option value="">Select Branch</option>
+                            <option value="CSE">CSE</option>
+                            <option value="IT">IT</option>
+                            <option value="ECE">ECE</option>
+                            <option value="EEE">EEE</option>
+                            <option value="MECH">MECH</option>
+                            <option value="CIVIL">CIVIL</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-users mr-1"></i> Section <span class="text-danger">*</span></label>
+                        <select class="form-control" name="permission_adjustment_sections[]" required>
+                            <option value="">Select Section</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label><i class="fas fa-book mr-1"></i> Subject <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="permission_adjustment_subjects[]" placeholder="Enter subject" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <?php include 'includes/footer.php'; ?>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <link rel="stylesheet" href="assets/css/leave-form.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <!-- Permission Leave Class Adjustment Template -->
+    <template id="permission_class_adjustment_template">
+        <div class="class-adjustment-row mt-2 border rounded p-2 bg-light">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group mb-2">
+                        <label>Date</label>
+                        <input type="text" class="form-control adjustment-date" name="adjustment_dates[]" required>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group mb-2">
+                        <label>Time</label>
+                        <select class="form-control adjustment-time" name="adjustment_times[]" required>
+                            <option value="">Select Time</option>
+                            <option value="8:40 AM - 9:30 AM">8:40 AM - 9:30 AM</option>
+                            <option value="9:30 AM - 10:20 AM">9:30 AM - 10:20 AM</option>
+                            <option value="10:30 AM - 11:20 AM">10:30 AM - 11:20 AM</option>
+                            <option value="11:20 AM - 12:10 PM">11:20 AM - 12:10 PM</option>
+                            <option value="1:30 PM - 2:20 PM">1:30 PM - 2:20 PM</option>
+                            <option value="2:20 PM - 3:10 PM">2:20 PM - 3:10 PM</option>
+                            <option value="3:20 PM - 4:10 PM">3:20 PM - 4:10 PM</option>
+                            <option value="4:10 PM - 5:00 PM">4:10 PM - 5:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-sm btn-danger remove-permission-adjustment"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" class="form-control" name="adjustment_subjects[]" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Adjusted By</label>
+                        <select class="form-control permission-faculty-select" name="adjustment_faculty[]" required>
+                            <option value="">Select Faculty</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Function to initialize datepicker for permission leave
+        function initializePermissionDatePicker() {
+            $('#permission_date').daterangepicker({
+                singleDatePicker: true,
+                autoUpdateInput: true,
+                minDate: moment(),
+                locale: {
+                    format: 'YYYY-MM-DD'
+                }
+            });
+        }
+        
+        // Function to handle permission leave submission
+        function submitPermissionLeave() {
+            const formData = {
+                is_permission: 1,
+                permission_date: $('#permission_date').val(),
+                permission_slot: $('input[name="permission_slot"]:checked').val(),
+                reason: $('#permission_reason').val(),
+                adjustments: []
+            };
+            
+            // Debug log
+            console.log('Submitting permission leave with data:', formData);
+            
+            // Validate required fields
+            if (!formData.permission_date) {
+                alert('Please select a date for permission leave');
+                return false;
+            }
+            
+            if (!formData.permission_slot) {
+                alert('Please select a time slot (Morning/Evening)');
+                return false;
+            }
+            
+            if (!formData.reason || formData.reason.trim() === '') {
+                alert('Please enter a reason for permission leave');
+                return false;
+            }
+            
+            // Collect class adjustments
+            let hasAdjustmentError = false;
+            $('.permission-adjustment-row').each(function() {
+                const row = $(this);
+                const adjustment = {
+                    date: row.find('.adjustment-date').val(),
+                    time: row.find('.adjustment-time').val(),
+                    subject: row.find('input[name^="adjustment_subjects"]').val(),
+                    faculty_id: row.find('select[name^="adjustment_faculty"]').val()
+                };
+                
+                // Validate adjustment fields
+                if (!adjustment.date || !adjustment.time || !adjustment.subject || !adjustment.faculty_id) {
+                    alert('Please fill in all class adjustment details');
+                    hasAdjustmentError = true;
+                    return false;
+                }
+                
+                formData.adjustments.push(adjustment);
+            });
+            
+            if (hasAdjustmentError) return false;
+
+            // Submit permission leave directly via AJAX
+            $.ajax({
+                url: window.location.href,
+                type: 'POST',
+                data: {
+                    is_permission: 1,
+                    permission_date: formData.permission_date,
+                    permission_slot: formData.permission_slot,
+                    reason: formData.reason,
+                    total_days: 0.5,
+                    adjustment_dates: formData.adjustments.map(adj => adj.date),
+                    adjustment_times: formData.adjustments.map(adj => adj.time),
+                    adjustment_subjects: formData.adjustments.map(adj => adj.subject),
+                    adjustment_faculty: formData.adjustments.map(adj => adj.faculty_id)
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log('Server response:', response);
+                    if (response.success) {
+                        // Close the modal
+                        $('#permissionLeaveModal').modal('hide');
+                        // Show success message and reload
+                        alert(response.message || 'Permission leave submitted successfully.');
+                        location.reload();
+                    } else {
+                        alert(response.message || 'Failed to submit permission leave: ' + (response.error || 'Unknown error'));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', {xhr: xhr, status: status, error: error});
+                    console.log('Response Text:', xhr.responseText);
+                    
+                    let errorMessage = 'Failed to submit permission leave. ';
+                    
+                    try {
+                        // Try to parse as JSON
+                        const response = JSON.parse(xhr.responseText);
+                        errorMessage += response.message || response.error || 'Unknown error occurred';
+                    } catch(e) {
+                        // If not JSON, show the raw response or a generic error
+                        if (xhr.responseText && xhr.responseText.length < 1000) {
+                            // If response is HTML, strip tags and show first 200 chars
+                            const cleanText = xhr.responseText.replace(/<[^>]*>/g, '').trim();
+                            errorMessage += cleanText.substring(0, 200) + (cleanText.length > 200 ? '...' : '');
+                        } else {
+                            errorMessage += 'Server returned an invalid response. Check console for details.';
+                        }
+                    }
+                    
+                    // Show error message in a more user-friendly way
+                    if (typeof showError === 'function') {
+                        showError(errorMessage);
+                    } else {
+                        // Fallback to alert if showError is not defined
+                        alert(errorMessage);
+                    }
+                }
+            });
+
+            return false; // Prevent form submission
+        }
+        
+        // Function to show error messages in a consistent way
+        function showError(message) {
+            // Create or show error container
+            let $errorContainer = $('#error-message-container');
+            if ($errorContainer.length === 0) {
+                $errorContainer = $('<div id="error-message-container" class="alert alert-danger" role="alert" style="display: none;"></div>');
+                $('main').prepend($errorContainer);
+            }
+            
+            // Set message and show
+            $errorContainer.html('<strong>Error:</strong> ' + message).fadeIn();
+            
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                $errorContainer.fadeOut();
+            }, 10000);
+            
+            // Scroll to error message
+            $('html, body').animate({
+                scrollTop: $errorContainer.offset().top - 20
+            }, 500);
+        }
+        
+        // Function to calculate working days
+        function calculateWorkingDays(startDate, endDate, leaveTypeId) {
+            $.ajax({
+                url: 'ajax/calculate_days.php',
+                type: 'POST',
+                data: {
+                    start_date: startDate,
+                    end_date: endDate,
+                    leave_type: leaveTypeId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        $('#total_days').val(response.days);
+                    }
+                }
+            });
+        }
+        
+        // Function to calculate total days for casual leave
+        function calculateCasualLeaveDays() {
+            let dates = [];
+            $('.casual-date-picker').each(function() {
+                if ($(this).val()) {
+                    dates.push($(this).val());
+                }
+            });
+            
+            if (dates.length > 0) {
+                $('#total_days').val(dates.length);
+                
+                // Update hidden date_range field with concatenated dates for form submission
+                $('#date_range').val(dates.join(','));
+            } else {
+                $('#total_days').val('0');
+                $('#date_range').val('');
+            }
+        }
+        
+        // Function to update leave period based on class date
+        function updateLeavePeriodFromClassDate(classDate) {
+            const leaveTypeId = $('#leave_type_id').val();
+            
+            // If casual leave, add the date to the casual dates
+            if (leaveTypeId === '2' || leaveTypeId === '3') { // Casual leave prior or emergency
+                let dateExists = false;
+                
+                // Check if date already exists in casual dates
+                $('.casual-date-picker').each(function() {
+                    if ($(this).val() === classDate) {
+                        dateExists = true;
+                        return false;
+                    }
+                });
+                
+                // If date doesn't exist, add it
+                if (!dateExists) {
+                    // If there's an empty input, use that
+                    let emptyInput = $('.casual-date-picker').filter(function() {
+                        return !$(this).val();
+                    }).first();
+                    
+                    if (emptyInput.length) {
+                        emptyInput.val(classDate);
+                    } else {
+                        // Add new date input
+                        $('#add_casual_date').click();
+                        $('.casual-date-picker:last').val(classDate);
+                    }
+                    
+                    // Recalculate total days
+                    calculateCasualLeaveDays();
+                }
+            } else {
+                // For other leave types, update the date range if empty or add to range
+                const currentRange = $('#date_range').val();
+                
+                if (!currentRange) {
+                    // If no date range set, set both start and end to the class date
+                    $('#date_range').val(classDate + ' to ' + classDate);
+                    calculateWorkingDays(classDate, classDate, leaveTypeId);
+                } else {
+                    // If date range exists, check if we need to expand it
+                    const dates = currentRange.split(' to ');
+                    const startDate = moment(dates[0], 'DD-MM-YYYY');
+                    const endDate = moment(dates[1], 'DD-MM-YYYY');
+                    const newDate = moment(classDate, 'DD-MM-YYYY');
+                    
+                    let updated = false;
+                    
+                    // If new date is before start date, update start date
+                    if (newDate.isBefore(startDate)) {
+                        startDate.set({
+                            year: newDate.year(),
+                            month: newDate.month(),
+                            date: newDate.date()
+                        });
+                        updated = true;
+                    }
+                    
+                    // If new date is after end date, update end date
+                    if (newDate.isAfter(endDate)) {
+                        endDate.set({
+                            year: newDate.year(),
+                            month: newDate.month(),
+                            date: newDate.date()
+                        });
+                        updated = true;
+                    }
+                    
+                    // If range was updated, update the input and recalculate days
+                    if (updated) {
+                        const newRange = startDate.format('DD-MM-YYYY') + ' to ' + endDate.format('DD-MM-YYYY');
+                        $('#date_range').val(newRange);
+                        calculateWorkingDays(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'), leaveTypeId);
+                    }
+                }
+            }
+        }
+        
+        // Initialize Select2 for faculty dropdowns
+        function initFacultySelect2(selector) {
+            console.log('Initializing Select2 on:', selector);
+            
+            try {
+                $(selector).select2({
+                    theme: 'bootstrap-5',
+                    placeholder: 'Search for a faculty member...',
+                    allowClear: true,
+                    width: '100%',
+                    ajax: {
+                        url: 'ajax/search_faculty.php',
+                        dataType: 'json',
+                        delay: 300,
+                        data: function (params) {
+                            console.log('Searching for:', params.term);
+                            return {
+                                q: params.term || '', // Ensure q is always a string
+                                page: params.page || 1
+                            };
+                        },
+                        processResults: function (data, params) {
+                            console.log('Received data:', data);
+                            
+                            // Handle error responses
+                            if (data.error) {
+                                console.error('Error from server:', data.error);
+                                return {
+                                    results: [],
+                                    pagination: { more: false }
+                                };
+                            }
+                            
+                            // Ensure data is an array
+                            if (!Array.isArray(data)) {
+                                console.error('Expected array but got:', typeof data);
+                                return {
+                                    results: [],
+                                    pagination: { more: false }
+                                };
+                            }
+                            
+                            params.page = params.page || 1;
+                            const more = data.length === 20; // We set perPage to 20 in PHP
+                            
+                            return {
+                                results: data,
+                                pagination: { more }
+                            };
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error('AJAX Error:', textStatus, errorThrown);
+                            console.error('Response:', jqXHR.responseText);
+                        },
+                        cache: true
+                    },
+                    minimumInputLength: 0,
+                    templateResult: formatFacultyResult,
+                    templateSelection: formatFacultySelection,
+                    escapeMarkup: function(markup) { return markup; }
+                });
+                
+                // Load initial data when dropdown is opened
+                $(selector).on('select2:open', function(e) {
+                    console.log('Dropdown opened');
+                    const $select = $(this);
+                    const select2 = $select.data('select2');
+                    
+                    if (select2 && !select2.data('initialized')) {
+                        console.log('Loading initial data...');
+                        select2.data('initialized', true);
+                        
+                        // Manually trigger search with empty term
+                        $select.select2('open');
+                        
+                        // Small delay to ensure dropdown is open
+                        setTimeout(function() {
+                            $select.select2('search', '');
+                        }, 100);
+                    }
+                });
+                
+                console.log('Select2 initialized successfully');
+                
+            } catch (error) {
+                console.error('Error initializing Select2:', error);
+            }
+        }
+        
+        // Format how each result appears in the dropdown
+        function formatFacultyResult(faculty) {
+            if (faculty.loading) {
+                return 'Searching...';
+            }
+            
+            if (!faculty.id) {
+                return faculty.text;
+            }
+            
+            return $(
+                '<div class="select2-result-faculty">' +
+                '  <div class="faculty-name">' + faculty.text + '</div>' +
+                '</div>'
+            );
+        }
+        
+        // Format how the selected result appears in the select box
+        function formatFacultySelection(faculty) {
+            return faculty.text || 'Select a faculty member';
+        }
+
+        function formatFaculty (faculty) {
+            if (faculty.loading) {
+                return faculty.text;
+            }
+            return $(
+                '<div>'+faculty.text+'</div>'
+            );
+        }
+
+        function formatFacultySelection (faculty) {
+            return faculty.text;
+        }
+
+        // Initialize Select2 for existing faculty selects
+        $(document).ready(function() {
+            initFacultySelect2('.faculty-select');
+            
+            // Initialize Select2 for permission faculty selects
+            $(document).on('shown.bs.modal', '#permissionLeaveModal', function() {
+                initFacultySelect2('.permission-faculty-select');
+            });
+            
+            // Handle permission leave form submission
+            $('#permission_leave_form').on('submit', function(e) {
+                e.preventDefault();
+                submitPermissionLeave();
+                return false;
+            });
+            
+            // Initialize date picker for permission leave
+            $('#permission_date').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                autoUpdateInput: false,
+                minDate: moment().startOf('day'),
+                locale: {
+                    format: 'DD-MM-YYYY'
+                }
+            });
+            
+            $('#permission_date').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MM-YYYY'));
+            });
+            
+            $('#permission_date').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
+            
+            // Show permission leave modal
+            $('#apply_permission_btn').on('click', function() {
+                // Reset the form
+                $('#permissionLeaveModal').modal('show');
+            });
+            
+            // Submit permission leave
+            function submitPermissionLeave() {
+                const form = $('#permission_leave_form');
+                
+                // Validate required fields
+                if (!form[0].checkValidity()) {
+                    form.addClass('was-validated');
+                    $('html, body').animate({
+                        scrollTop: $('.is-invalid').first().offset().top - 100
+                    }, 500);
+                    return false;
+                }
+                
+                // Get form data
+                const formData = new FormData();
+                const permissionDate = $('#permission_date').val();
+                const permissionSlot = $('input[name="permission_slot"]:checked').val();
+                const reason = $('#permission_reason').val();
+                
+                // Add basic form data
+                formData.append('is_permission', '1');
+                formData.append('permission_date', permissionDate);
+                formData.append('permission_slot', permissionSlot);
+                formData.append('reason', reason);
+                
+                // Prepare class adjustments array
+                const adjustments = [];
+                console.log('Looking for class adjustment rows...');
+                
+                // Get all adjustment rows
+                const adjustmentRows = $('.class-adjustment-row');
+                console.log('Found', adjustmentRows.length, 'adjustment rows');
+                
+                adjustmentRows.each(function(index) {
+                    try {
+                        const row = $(this);
+                        console.log(`\n--- Processing row ${index + 1} ---`);
+                        
+                        // 1. Get the date from the datepicker
+                        const dateInput = row.find('input.permission-class-date');
+                        const date = dateInput.val();
+                        console.log('Date input:', date);
+                        
+                        // 2. Get the time from the time select
+                        const timeSelect = row.find('select[name^="permission_adjustment_times"]');
+                        let time = timeSelect.val();
+                        console.log('Time select value:', time);
+                        
+                        // Handle custom time if selected
+                        if (time === 'custom') {
+                            const customTimeInput = row.find('input[name^="permission_custom_time"]');
+                            time = customTimeInput.val();
+                            console.log('Using custom time:', time);
+                        }
+                        
+                        // 3. Get the faculty ID from the select2
+                        const facultySelect = row.find('select.permission-faculty-select');
+                        const facultyId = facultySelect.val();
+                        console.log('Faculty select value:', facultyId);
+                        
+                        // 4. Get the subject
+                        const subjectInput = row.find('input[name^="permission_adjustment_subjects"]');
+                        const subject = subjectInput.val();
+                        console.log('Subject input value:', subject);
+                        
+                        // Log the raw values for debugging
+                        console.log('Raw values:', {
+                            date: date,
+                            time: time,
+                            facultyId: facultyId,
+                            subject: subject
+                        });
+                        
+                        // Check if all required fields are filled
+                        const allFieldsFilled = date && time && facultyId && subject;
+                        console.log(`Row ${index + 1} validation:`, {
+                            hasDate: !!date,
+                            hasTime: !!time,
+                            hasFaculty: !!facultyId,
+                            hasSubject: !!subject,
+                            allFieldsFilled: allFieldsFilled
+                        });
+                        
+                        // Only add if required fields are filled
+                        if (allFieldsFilled) {
+                            const adjustment = {
+                                date: date,
+                                time: time,
+                                subject: subject,
+                                faculty_id: facultyId
+                            };
+                            console.log(`✅ Adding adjustment ${index + 1}:`, adjustment);
+                            adjustments.push(adjustment);
+                        } else {
+                            console.log(`❌ Skipping row ${index + 1} - missing required fields`);
+                        }
+                    } catch (error) {
+                        console.error('Error processing row:', error);
+                    }
+                });
+                
+                console.log('\n--- Form Submission Summary ---');
+                console.log('Total adjustment rows found:', adjustmentRows.length);
+                console.log('Valid adjustments prepared:', adjustments.length);
+                
+                console.log('Total adjustments found:', adjustments.length);
+                
+                // Add adjustments as JSON string
+                if (adjustments.length > 0) {
+                    formData.append('adjustments', JSON.stringify(adjustments));
+                    console.log('Adjustments being sent:', adjustments);
+                    
+                    // Log the form data being sent
+                    for (let pair of formData.entries()) {
+                        console.log(pair[0] + ': ', pair[1]);
+                    }
+                } else {
+                    console.log('No valid adjustments to send');
+                    console.log('All class-adjustment-rows:', $('.class-adjustment-row').length);
+                    console.log('Form HTML:', $('#permission_leave_form').html());
+                    alert('Please add at least one class adjustment with all required fields filled.');
+                    return false;
+                }
+                
+                // Log all form data for debugging
+                for (let pair of formData.entries()) {
+                    console.log(pair[0] + ': ' + pair[1]);
+                }
+                
+                // Show loading state
+                const submitBtn = $('#submit_permission_leave');
+                const originalBtnText = submitBtn.html();
+                submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...');
+                
+                // Log form data for debugging
+                for (let pair of formData.entries()) {
+                    console.log(pair[0] + ': ' + pair[1]);
+                }
+                
+                // Submit the form via AJAX
+                $.ajax({
+                    url: 'process_permission_leave.php',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log('Server response:', response);
+                        
+                        // Ensure response is an object
+                        if (typeof response === 'string') {
+                            try {
+                                response = JSON.parse(response);
+                            } catch (e) {
+                                console.error('Error parsing response:', e);
+                                showError('Invalid response from server. Please try again.');
+                                submitBtn.prop('disabled', false).html(originalBtnText);
+                                return;
+                            }
+                        }
+                        
+                        if (response.success) {
+                            // Show success message
+                            const successMsg = response.message || 'Permission leave submitted successfully!';
+                            alert(successMsg);
+                            
+                            // Hide modal and reload page
+                            $('#permissionLeaveModal').modal('hide');
+                            window.location.reload();
+                        } else {
+                            // Show error message
+                            const errorMsg = response.message || 'Failed to submit permission leave. Please try again.';
+                            alert(errorMsg);
+                            submitBtn.prop('disabled', false).html(originalBtnText);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Log detailed error information
+                        const errorDetails = {
+                            status: status,
+                            error: error,
+                            statusCode: xhr.status,
+                            readyState: xhr.readyState,
+                            responseHeaders: xhr.getAllResponseHeaders(),
+                            responseText: xhr.responseText
+                        };
+                        
+                        console.error('AJAX Error Details:', errorDetails);
+                        
+                        let errorMessage = 'Failed to submit permission leave.\n\n';
+                        
+                        // Add more specific error messages based on status
+                        if (xhr.status === 0) {
+                            errorMessage += 'Network error: Could not connect to the server.\n';
+                            errorMessage += '• Please check your internet connection\n';
+                            errorMessage += '• Verify the server is running\n';
+                        } else if (xhr.status === 500) {
+                            errorMessage += 'Server error (500): An internal server error occurred.\n';
+                        } else if (xhr.status === 404) {
+                            errorMessage += 'Error (404): The requested URL was not found.\n';
+                        } else if (xhr.status === 403) {
+                            errorMessage += 'Error (403): Access forbidden. You may not have permission.\n';
+                        }
+                        
+                        // Check if we have a response from the server
+                        if (xhr.responseText) {
+                            try {
+                                // Try to parse as JSON
+                                const errorResponse = JSON.parse(xhr.responseText);
+                                if (errorResponse.message) {
+                                    errorMessage += `Error: ${errorResponse.message}\n\n`;
+                                }
+                            } catch (e) {
+                                // If not JSON, show the raw response
+                                errorMessage += `Server response: ${xhr.responseText.substring(0, 500)}\n\n`;
+                            }
+                        } else {
+                            errorMessage += 'Server returned an empty response.\n\n';
+                        }
+                        
+                        // Add more debugging info
+                        errorMessage += `Status: ${xhr.status} (${status})\n`;
+                        errorMessage += `Error: ${error || 'Unknown error'}\n\n`;
+                        errorMessage += 'Please check your input and try again. If the problem persists, contact support.';
+                        
+                        // Show detailed error message in console
+                        console.error('Detailed error:', errorMessage);
+                        
+                        // Show error message to user
+                        alert(errorMessage);
+                        submitBtn.prop('disabled', false).html(originalBtnText);
+                    }
+                });
+            }
+            
+            // Submit permission leave button click handler
+            $('#submit_permission_leave').on('click', submitPermissionLeave);
+            
+            // Add permission class adjustment
+            function addPermissionClassAdjustment() {
+                const template = document.querySelector('#permission_class_adjustment_template');
+                const clone = document.importNode(template.content, true);
+                const container = document.getElementById('permission_class_adjustment_container');
+                
+                // Add remove button functionality
+                clone.querySelector('.remove-permission-adjustment').addEventListener('click', function() {
+                    this.closest('.class-adjustment-row').remove();
+                    updateRowNumbers();
+                });
+                
+                // Append the new row
+                container.appendChild(clone);
+                
+                // Initialize date picker for the new row
+                const newRow = container.lastElementChild;
+                $(newRow).find('.permission-class-date').daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minDate: moment().startOf('day'),
+                    locale: {
+                        format: 'DD-MM-YYYY'
+                    }
+                });
+                
+                // Handle date selection
+                $(newRow).find('.permission-class-date').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('DD-MM-YYYY'));
+                });
+                
+                // Initialize Select2 for the faculty dropdown
+                const facultySelect = $(newRow).find('.permission-faculty-select');
+                initFacultySelect2(facultySelect);
+                
+                // Update row numbers
+                updateRowNumbers();
+            }
+            
+            // Update row numbers for better UX
+            function updateRowNumbers() {
+                $('.class-adjustment-row').each(function(index) {
+                    $(this).find('.row-number').text(index + 1);
+                });
+            }
+            
+            // Add permission class adjustment button click handler
+            $('#add_permission_class_adjustment').on('click', addPermissionClassAdjustment);
+            
+            // Add initial class adjustment row when modal is shown
+            $('#permissionLeaveModal').on('shown.bs.modal', function() {
+                // Clear any existing adjustments
+                $('#permission_class_adjustment_container').empty();
+                // Add first row
+                addPermissionClassAdjustment();
+            });
+            
+            // Remove permission class adjustment
+            $(document).on('click', '.remove-permission-adjustment', function() {
+                $(this).closest('.class-adjustment-row').remove();
+            });
+            
+            // Handle custom time selection
+            $(document).on('change', '.time-select', function() {
+                const $select = $(this);
+                const $customInput = $select.next('.custom-time-input');
+                
+                if ($select.val() === 'custom') {
+                    $customInput.show().attr('required', true);
+                } else {
+                    $customInput.hide().removeAttr('required');
+                }
+            });
+            
+            // Handle form submission to ensure custom time is used when selected
+            $(document).on('submit', '#leave_application_form, #permission_leave_form', function(e) {
+                // Handle custom time inputs
+                $('.time-select').each(function() {
+                    const $select = $(this);
+                    const $customInput = $select.next('.custom-time-input');
+                    
+                    if ($select.val() === 'custom' && $customInput.val().trim() !== '') {
+                        // Update the select value with the custom time
+                        $select.val($customInput.val().trim());
+                    }
+                    
+                    // Ensure custom input is not submitted if not used
+                    if ($select.val() !== 'custom') {
+                        $customInput.removeAttr('name');
+                    }
+                });
+                
+                return true; // Continue with form submission
+            });
+            
+            // Reset permission form when modal is hidden
+            $('#permissionLeaveModal').on('hidden.bs.modal', function() {
+                $('#permission_leave_form')[0].reset();
+                $('#permission_class_adjustment_container').empty();
+                $('.custom-time-input').hide().val('').removeAttr('required');
+            });
+            
+            // Initialize date range picker for regular leave
+            $('.date-range-picker').daterangepicker({
+                opens: 'left',
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear',
+                    format: 'DD-MM-YYYY'
+                },
+                minDate: moment().startOf('day')
+            });
+            
+            $('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MM-YYYY') + ' to ' + picker.endDate.format('DD-MM-YYYY'));
+                
+                // Calculate working days
+                calculateWorkingDays(
+                    picker.startDate.format('YYYY-MM-DD'),
+                    picker.endDate.format('YYYY-MM-DD'),
+                    $('#leave_type_id').val()
+                );
+            });
+            
+            $('.date-range-picker').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+                $('#total_days').val('');
+            });
+            
+            // Initialize single date picker for casual leave
+            function initCasualDatePicker(element) {
+                $(element).daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minDate: moment().startOf('day'),
+                    locale: {
+                        format: 'DD-MM-YYYY'
+                    }
+                });
+                
+                $(element).on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('DD-MM-YYYY'));
+                    calculateCasualLeaveDays();
+                });
+                
+                $(element).on('cancel.daterangepicker', function(ev, picker) {
+                    $(this).val('');
+                    calculateCasualLeaveDays();
+                });
+            }
+            
+            // Initialize the first casual date picker
+            initCasualDatePicker('.casual-date-picker');
+            
+            // Add more casual date inputs
+            $('#add_casual_date').on('click', function() {
+                const container = $('#casual_dates_container');
+                const newRow = container.find('.date-input-container:first').clone();
+                
+                // Clear the input value
+                newRow.find('input').val('');
+                
+                // Show the remove button
+                newRow.find('.remove-date').show();
+                
+                // Add to container
+                container.append(newRow);
+                
+                // Initialize date picker on the new input
+                initCasualDatePicker(newRow.find('.casual-date-picker'));
+            });
+            
+            // Remove casual date input
+            $(document).on('click', '.remove-date', function() {
+                $(this).closest('.date-input-container').remove();
+                calculateCasualLeaveDays();
+            });
+            
+            // Toggle between casual leave and regular leave date pickers
+            $('#leave_type_id').on('change', function() {
+                const leaveTypeId = $(this).val();
+                const leaveType = $(this).find('option:selected').data('type');
+                
+                // Reset total days
+                $('#total_days').val('');
+                
+                // Toggle date picker based on leave type
+                if (leaveTypeId === '2' || leaveTypeId === '3') { // Casual leave prior or emergency
+                    $('#casual_leave_container').show();
+                    $('#regular_leave_container').hide();
+                    $('#date_range').prop('required', false);
+                    calculateCasualLeaveDays();
+                } else {
+                    $('#casual_leave_container').hide();
+                    $('#regular_leave_container').show();
+                    $('#date_range').prop('required', true);
+                }
+                
+                // Show document upload for medical, maternity, academic and study leave
+                if (leaveType && (leaveType.includes('medical_leave') || leaveType.includes('maternity_leave') || 
+                    leaveType.includes('academic_leave') || leaveType.includes('study_leave'))) {
+                    $('.document-upload-section').removeClass('d-none');
+                    
+                    // Update document upload label based on leave type
+                    if (leaveType.includes('medical_leave') || leaveType.includes('maternity_leave')) {
+                        $('#document-label').text('Upload Medical Certificate');
+                    } else if (leaveType.includes('academic_leave') || leaveType.includes('study_leave')) {
+                        $('#document-label').text('Upload Supporting Documents');
+                    }
+                } else {
+                    $('.document-upload-section').addClass('d-none');
+                }
+                
+                // Show warning for earned leave if balance is low
+                if (leaveType && leaveType.includes('earned_leave')) {
+                    const balanceText = $(this).find('option:selected').text();
+                    const match = balanceText.match(/Balance: ([\d.]+)/);
+                    if (match && parseFloat(match[1]) < 5) {
+                        $('#earned-leave-warning').removeClass('d-none');
+                    } else {
+                        $('#earned-leave-warning').addClass('d-none');
+                    }
+                } else {
+                    $('#earned-leave-warning').addClass('d-none');
+                }
+                
+                // Show warning for paid leave
+                if (leaveType && leaveType.includes('paid_leave')) {
+                    $('#paid-leave-warning').removeClass('d-none');
+                } else {
+                    $('#paid-leave-warning').addClass('d-none');
+                }
+            });
+            
+            // Add class adjustment row
+            $('#add_class_adjustment').on('click', function() {
+                const template = document.querySelector('#class_adjustment_template');
+                const clone = document.importNode(template.content, true);
+                
+                // Update row number and IDs
+                const rowCount = $('#class_adjustments_container .class-adjustment-row').length + 1;
+                $(clone).find('.row-number').text(rowCount);
+                
+                // Add to container
+                const container = $('#class_adjustments_container');
+                container.append(clone);
+                
+                // Initialize date picker for the new row
+                const newDatePicker = container.find('.class-date-picker:last');
+                newDatePicker.daterangepicker({
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minDate: moment().startOf('day'),
+                    locale: {
+                        format: 'DD-MM-YYYY'
+                    }
+                });
+                
+                newDatePicker.on('apply.daterangepicker', function(ev, picker) {
+                    const selectedDate = picker.startDate.format('DD-MM-YYYY');
+                    $(this).val(selectedDate);
+                    
+                    // Auto-populate leave period based on class date
+                    updateLeavePeriodFromClassDate(selectedDate);
+                });
+                
+                // Initialize Select2 for the faculty dropdown
+                const facultySelect = container.find('.faculty-select:last');
+                initFacultySelect2(facultySelect);
+                
+                // Update row numbers
+                updateClassAdjustmentRows();
+                
+                return false;
+            });
+            
+            // Handle faculty suggestion selection
+            $(document).on('click', '.faculty-suggestions li', function() {
+                const facultyId = $(this).data('id');
+                const facultyName = $(this).text();
+                const container = $(this).closest('.form-group');
+                
+                container.find('.faculty-autosuggest').val(facultyName);
+                container.find('input[name="adjusted_faculty_id[]"]').val(facultyId);
+                container.find('.faculty-suggestions').hide();
+            });
+            
+            // Hide suggestions when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.faculty-autosuggest, .faculty-suggestions').length) {
+                    $('.faculty-suggestions').hide();
+                }
+            });
+            
+            // Remove class adjustment row
+            $(document).on('click', '.remove-class-adjustment', function() {
+                $(this).closest('.class-adjustment-row').remove();
+                
+                // Update row numbers
+                updateClassAdjustmentRows();
+                
+                return false;
+            });
+            
+            // Update row numbers function
+            function updateClassAdjustmentRows() {
+                $('.class-adjustment-row').each(function(index) {
+                    $(this).find('.row-number').text(index + 1);
+                });
+            }
+            
+            // Form validation
+            $('#leave_application_form').validate({
+                rules: {
+                    leave_type_id: {
+                        required: true
+                    },
+                    date_range: {
+                        required: function() {
+                            const leaveTypeId = $('#leave_type_id').val();
+                            return leaveTypeId !== '2' && leaveTypeId !== '3'; // Not required for casual leave types
+                        }
+                    },
+                    reason: {
+                        required: true,
+                        minlength: 10
+                    }
+                },
+                messages: {
+                    leave_type_id: {
+                        required: "Please select a leave type"
+                    },
+                    date_range: {
+                        required: "Please select the leave date range"
+                    },
+                    reason: {
+                        required: "Please provide a reason for your leave",
+                        minlength: "Your reason must be at least 10 characters long"
+                    }
+                },
+                errorElement: 'div',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid').removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid').addClass('is-valid');
+                },
+                submitHandler: function(form) {
+                    // Skip validation if this is a permission leave submission
+                    if ($(form).find('input[name="is_permission"]').val() === '1') {
+                        // Only require date_range, total_days, reason, and permission_slot for permission leave
+                        if (!$('#date_range').val() || !$('#total_days').val() || !$('#reason').val() || !$('input[name="permission_slot"]').val()) {
+                            alert('Please fill all required fields for permission leave.');
+                            return false;
+                        }
+                        return true; // Already validated in submitPermissionLeave()
+                    }
+                    
+                    // Original validation for regular leave
+                    const leaveTypeId = $('#leave_type_id').val();
+                    if (leaveTypeId === '2' || leaveTypeId === '3') { // Casual leave prior or emergency
+                        let hasDate = false;
+                        $('.casual-date-picker').each(function() {
+                            if ($(this).val()) {
+                                hasDate = true;
+                                return false;
+                            }
+                        });
+                        
+                        if (!hasDate) {
+                            alert('Please select at least one date for casual leave');
+                            return false;
+                        }
+                    }
+                    
+                    // Validate class adjustments
+                    if ($('.class-adjustment-row').length > 0) {
+                        let valid = true;
+                        $('.class-adjustment-row').each(function() {
+                            const row = $(this);
+                            
+                            // Check if faculty is selected - using the Select2 dropdown
+                            const facultySelect = row.find('.faculty-select');
+                            if (facultySelect.length && !facultySelect.val()) {
+                                alert('Please select a faculty member for class adjustment');
+                                valid = false;
+                                return false;
+                            }
+                            
+                            // Check if class date is selected
+                            if (!row.find('.class-date-picker').val()) {
+                                alert('Please select a date for class adjustment');
+                                valid = false;
+                                return false;
+                            }
+                            
+                            // Check if all class details are filled
+                            if (!row.find('select[name^="class_year"]').val() ||
+                                !row.find('select[name^="class_branch"]').val() ||
+                                !row.find('select[name^="class_section"]').val() ||
+                                !row.find('select[name^="class_time"]').val() ||
+                                !row.find('input[name^="class_subject"]').val()) {
+                                alert('Please fill all class details (Year, Branch, Section, Time, Subject)');
+                                valid = false;
+                                return false;
+                            }
+                        });
+                        
+                        if (!valid) return false;
+                    }
+                    
+                    return true;
+                }
+            });
+            
+            // File input customization
+            $('.custom-file-input').on('change', function() {
+                let fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').addClass("selected").html(fileName);
+            });
+        });
+    </script>
+</body>
+</html>

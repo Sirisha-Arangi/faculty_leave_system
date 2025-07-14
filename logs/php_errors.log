@@ -1,0 +1,1713 @@
+[13-Jul-2025 18:23:50 Europe/Berlin] \n=== 2025-07-13 18:23:50 Error logging initialized ===
+[13-Jul-2025 18:23:50 Europe/Berlin] \n=== 2025-07-13 18:23:50 Script started ===
+[13-Jul-2025 18:23:50 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:23:50 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:23:50 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:23:50 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:23:50 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:23:50 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 26-07-2025
+    [permission_slot] => morning
+    [reason] => Apply for Permission Leave
+    [adjustments] => [{"date":"26-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:23:50 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:23:50 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:23:50 Europe/Berlin] Inserted leave application with ID: 4
+[13-Jul-2025 18:23:50 Europe/Berlin] Unhandled exception: Failed to prepare class adjustment statement:  in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 277
+[13-Jul-2025 18:23:58 Europe/Berlin] \n=== 2025-07-13 18:23:58 Error logging initialized ===
+[13-Jul-2025 18:23:58 Europe/Berlin] \n=== 2025-07-13 18:23:58 Script started ===
+[13-Jul-2025 18:23:58 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:23:58 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:23:58 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:23:58 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:23:58 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:23:58 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 26-07-2025
+    [permission_slot] => morning
+    [reason] => Apply for Permission Leave
+    [adjustments] => [{"date":"26-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:23:58 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:23:58 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:23:58 Europe/Berlin] Inserted leave application with ID: 5
+[13-Jul-2025 18:23:58 Europe/Berlin] Unhandled exception: Failed to prepare class adjustment statement:  in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 277
+[13-Jul-2025 18:25:14 Europe/Berlin] \n=== 2025-07-13 18:25:14 Error logging initialized ===
+[13-Jul-2025 18:25:14 Europe/Berlin] \n=== 2025-07-13 18:25:14 Script started ===
+[13-Jul-2025 18:25:14 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:25:14 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:25:14 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:25:14 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:25:14 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:25:14 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 26-07-2025
+    [permission_slot] => morning
+    [reason] => Apply for Permission Leave
+    [adjustments] => [{"date":"26-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:25:14 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:25:14 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:25:14 Europe/Berlin] Inserted leave application with ID: 6
+[13-Jul-2025 18:25:14 Europe/Berlin] Unhandled exception: Failed to prepare class adjustment statement:  in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 280
+[13-Jul-2025 18:25:17 Europe/Berlin] \n=== 2025-07-13 18:25:17 Error logging initialized ===
+[13-Jul-2025 18:25:17 Europe/Berlin] \n=== 2025-07-13 18:25:17 Script started ===
+[13-Jul-2025 18:25:17 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:25:17 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:25:17 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:25:17 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:25:17 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:25:17 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 26-07-2025
+    [permission_slot] => morning
+    [reason] => Apply for Permission Leave
+    [adjustments] => [{"date":"26-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:25:17 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:25:17 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:25:17 Europe/Berlin] Inserted leave application with ID: 7
+[13-Jul-2025 18:25:17 Europe/Berlin] Unhandled exception: Failed to prepare class adjustment statement:  in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 280
+[13-Jul-2025 18:26:25 Europe/Berlin] \n=== 2025-07-13 18:26:25 Error logging initialized ===
+[13-Jul-2025 18:26:25 Europe/Berlin] \n=== 2025-07-13 18:26:25 Script started ===
+[13-Jul-2025 18:26:25 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:26:25 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:26:25 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:26:25 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:26:25 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:26:25 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 26-07-2025
+    [permission_slot] => morning
+    [reason] => Apply for Permission Leave
+    [adjustments] => [{"date":"26-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:26:25 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:26:25 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:26:25 Europe/Berlin] Inserted leave application with ID: 8
+[13-Jul-2025 18:26:25 Europe/Berlin] Unhandled exception: Failed to prepare class adjustment statement:  in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 280
+[13-Jul-2025 18:26:39 Europe/Berlin] \n=== 2025-07-13 18:26:39 Error logging initialized ===
+[13-Jul-2025 18:26:39 Europe/Berlin] \n=== 2025-07-13 18:26:39 Script started ===
+[13-Jul-2025 18:26:39 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:26:39 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:26:39 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:26:39 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:26:39 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:26:39 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 26-07-2025
+    [permission_slot] => morning
+    [reason] => Apply for Permission Leave
+    [adjustments] => [{"date":"26-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:26:39 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:26:39 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:26:39 Europe/Berlin] Inserted leave application with ID: 9
+[13-Jul-2025 18:26:39 Europe/Berlin] Unhandled exception: Failed to prepare class adjustment statement:  in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 280
+[13-Jul-2025 18:29:59 Europe/Berlin] \n=== 2025-07-13 18:29:59 Error logging initialized ===
+[13-Jul-2025 18:29:59 Europe/Berlin] \n=== 2025-07-13 18:29:59 Script started ===
+[13-Jul-2025 18:29:59 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:29:59 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:29:59 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:29:59 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:29:59 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:29:59 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 26-07-2025
+    [permission_slot] => morning
+    [reason] => Apply for Permission Leave
+    [adjustments] => [{"date":"26-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:29:59 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:29:59 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:29:59 Europe/Berlin] Inserted leave application with ID: 10
+[13-Jul-2025 18:29:59 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, adjustment_date, adjustment_time, subject, adjusted_by, status, created_at) 
+                VALUES (?, ?, ?, ?, ?, 'pending', ?)
+[13-Jul-2025 18:29:59 Europe/Berlin] SQL Error: 
+[13-Jul-2025 18:29:59 Europe/Berlin] SQL State: 00000
+[13-Jul-2025 18:29:59 Europe/Berlin] Error Code: 0
+[13-Jul-2025 18:29:59 Europe/Berlin] Unhandled exception: Failed to prepare class adjustment statement:  in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 345
+[13-Jul-2025 18:30:33 Europe/Berlin] \n=== 2025-07-13 18:30:33 Error logging initialized ===
+[13-Jul-2025 18:30:33 Europe/Berlin] \n=== 2025-07-13 18:30:33 Script started ===
+[13-Jul-2025 18:30:33 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:30:33 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:30:33 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:30:33 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:30:33 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:30:33 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 26-07-2025
+    [permission_slot] => morning
+    [reason] => An error occurred while processing your request
+    [adjustments] => [{"date":"26-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:30:33 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:30:33 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:30:33 Europe/Berlin] Inserted leave application with ID: 11
+[13-Jul-2025 18:30:33 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, adjustment_date, adjustment_time, subject, adjusted_by, status, created_at) 
+                VALUES (?, ?, ?, ?, ?, 'pending', ?)
+[13-Jul-2025 18:30:33 Europe/Berlin] SQL Error: 
+[13-Jul-2025 18:30:33 Europe/Berlin] SQL State: 00000
+[13-Jul-2025 18:30:33 Europe/Berlin] Error Code: 0
+[13-Jul-2025 18:30:33 Europe/Berlin] Unhandled exception: Failed to prepare class adjustment statement:  in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 345
+[13-Jul-2025 18:38:20 Europe/Berlin] \n=== 2025-07-13 18:38:20 Error logging initialized ===
+[13-Jul-2025 18:38:20 Europe/Berlin] \n=== 2025-07-13 18:38:20 Script started ===
+[13-Jul-2025 18:38:20 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:38:20 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:38:20 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:38:20 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:38:20 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:38:20 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 26-07-2025
+    [permission_slot] => morning
+    [reason] => An error occurred while processing your request
+    [adjustments] => [{"date":"26-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:38:20 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:38:20 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:38:20 Europe/Berlin] Inserted leave application with ID: 12
+[13-Jul-2025 18:38:20 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[13-Jul-2025 18:38:20 Europe/Berlin] Inserted class adjustment for faculty ID: 7 on 26-07-2025 at 9:30 AM - 10:20 AM
+[13-Jul-2025 18:38:20 Europe/Berlin] Failed to prepare notification statement: 
+[13-Jul-2025 18:42:51 Europe/Berlin] \n=== 2025-07-13 18:42:51 Error logging initialized ===
+[13-Jul-2025 18:42:51 Europe/Berlin] \n=== 2025-07-13 18:42:51 Script started ===
+[13-Jul-2025 18:42:51 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 18:42:51 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 18:42:51 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 18:42:51 Europe/Berlin] Session status: 2
+[13-Jul-2025 18:42:51 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 18:42:51 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 31-07-2025
+    [permission_slot] => afternoon
+    [reason] => 	permission_leave
+    [adjustments] => [{"date":"31-07-2025","time":"3:20 PM - 4:10 PM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 18:42:51 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 18:42:51 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 18:42:51 Europe/Berlin] Inserted leave application with ID: 13
+[13-Jul-2025 18:42:51 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[13-Jul-2025 18:42:51 Europe/Berlin] Inserted class adjustment for faculty ID: 7 on 2025-07-31 at 3:20 PM - 4:10 PM
+[13-Jul-2025 18:42:51 Europe/Berlin] Failed to prepare notification statement: 
+[13-Jul-2025 20:40:24 Europe/Berlin] \n=== 2025-07-13 20:40:24 Error logging initialized ===
+[13-Jul-2025 20:40:24 Europe/Berlin] \n=== 2025-07-13 20:40:24 Script started ===
+[13-Jul-2025 20:40:24 Europe/Berlin] PHP Version: 8.0.30
+[13-Jul-2025 20:40:24 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[13-Jul-2025 20:40:24 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[13-Jul-2025 20:40:24 Europe/Berlin] Session status: 2
+[13-Jul-2025 20:40:24 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[13-Jul-2025 20:40:24 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 01-08-2025
+    [permission_slot] => afternoon
+    [reason] => https://amzn.in/d/1r11SBB
+    [adjustments] => [{"date":"01-08-2025","time":"3:20 PM - 4:10 PM","subject":"DL","faculty_id":"7"}]
+)
+
+[13-Jul-2025 20:40:24 Europe/Berlin] Session data: Array
+(
+    [user_id] => 6
+    [username] => CSMFACULTY2
+    [name] => CSM FACULTY2
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[13-Jul-2025 20:40:24 Europe/Berlin] Starting database transaction...
+[13-Jul-2025 20:40:24 Europe/Berlin] Inserted leave application with ID: 14
+[13-Jul-2025 20:40:24 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[13-Jul-2025 20:40:24 Europe/Berlin] Inserted class adjustment for faculty ID: 7 on 2025-08-01 at 3:20 PM - 4:10 PM
+[13-Jul-2025 20:40:24 Europe/Berlin] Error in getHodUserId: Failed to prepare department query: Unknown column 'department_id' in 'field list'
+[13-Jul-2025 20:40:24 Europe/Berlin] Could not find HOD to send notification
+[13-Jul-2025 23:53:50 Europe/Berlin] Error in permission leave submission: Failed to execute statement: Cannot add or update a child row: a foreign key constraint fails (`faculty_leave_system`.`leave_applications`, CONSTRAINT `leave_applications_ibfk_2` FOREIGN KEY (`leave_type_id`) REFERENCES `leave_types` (`type_id`))
+[13-Jul-2025 23:53:50 Europe/Berlin] Stack trace: #0 {main}
+[13-Jul-2025 23:53:57 Europe/Berlin] Error in permission leave submission: Failed to execute statement: Cannot add or update a child row: a foreign key constraint fails (`faculty_leave_system`.`leave_applications`, CONSTRAINT `leave_applications_ibfk_2` FOREIGN KEY (`leave_type_id`) REFERENCES `leave_types` (`type_id`))
+[13-Jul-2025 23:53:57 Europe/Berlin] Stack trace: #0 {main}
+[13-Jul-2025 23:56:19 Europe/Berlin] Error in permission leave submission: Failed to execute statement: Cannot add or update a child row: a foreign key constraint fails (`faculty_leave_system`.`leave_applications`, CONSTRAINT `leave_applications_ibfk_2` FOREIGN KEY (`leave_type_id`) REFERENCES `leave_types` (`type_id`))
+[13-Jul-2025 23:56:19 Europe/Berlin] Stack trace: #0 {main}
+[14-Jul-2025 00:10:53 Europe/Berlin] \n=== 2025-07-14 00:10:53 Error logging initialized ===
+[14-Jul-2025 00:10:53 Europe/Berlin] \n=== 2025-07-14 00:10:53 Script started ===
+[14-Jul-2025 00:10:53 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 00:10:53 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 00:10:53 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 00:10:53 Europe/Berlin] Session status: 2
+[14-Jul-2025 00:10:53 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 00:10:53 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 30-07-2025
+    [permission_slot] => morning
+    [reason] => APPLY
+)
+
+[14-Jul-2025 00:10:53 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 00:10:53 Europe/Berlin] Unhandled exception: Missing required fields: Class adjustments in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 271
+[14-Jul-2025 00:12:07 Europe/Berlin] \n=== 2025-07-14 00:12:07 Error logging initialized ===
+[14-Jul-2025 00:12:07 Europe/Berlin] \n=== 2025-07-14 00:12:07 Script started ===
+[14-Jul-2025 00:12:07 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 00:12:07 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 00:12:07 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 00:12:07 Europe/Berlin] Session status: 2
+[14-Jul-2025 00:12:07 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 00:12:07 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 22-07-2025
+    [permission_slot] => morning
+    [reason] => An error occurred while processing your request
+)
+
+[14-Jul-2025 00:12:07 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 00:12:07 Europe/Berlin] Unhandled exception: Missing required fields: Class adjustments in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 271
+[14-Jul-2025 00:13:58 Europe/Berlin] \n=== 2025-07-14 00:13:58 Error logging initialized ===
+[14-Jul-2025 00:13:58 Europe/Berlin] \n=== 2025-07-14 00:13:58 Script started ===
+[14-Jul-2025 00:13:58 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 00:13:58 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 00:13:58 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 00:13:58 Europe/Berlin] Session status: 2
+[14-Jul-2025 00:13:58 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 00:13:58 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 22-07-2025
+    [permission_slot] => morning
+    [reason] => An error occurred while processing your request
+)
+
+[14-Jul-2025 00:13:58 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 00:13:58 Europe/Berlin] Unhandled exception: Missing required fields: Class adjustments in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 308
+[14-Jul-2025 00:58:35 Europe/Berlin] \n=== 2025-07-14 00:58:35 Error logging initialized ===
+[14-Jul-2025 00:58:35 Europe/Berlin] \n=== 2025-07-14 00:58:35 Script started ===
+[14-Jul-2025 00:58:35 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 00:58:35 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 00:58:35 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 00:58:35 Europe/Berlin] Session status: 2
+[14-Jul-2025 00:58:35 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 00:58:35 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => FTGCHFR
+)
+
+[14-Jul-2025 00:58:35 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 00:58:35 Europe/Berlin] Unhandled exception: Missing required fields: Class adjustments in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 271
+[14-Jul-2025 01:00:48 Europe/Berlin] \n=== 2025-07-14 01:00:48 Error logging initialized ===
+[14-Jul-2025 01:00:48 Europe/Berlin] \n=== 2025-07-14 01:00:48 Script started ===
+[14-Jul-2025 01:00:48 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 01:00:48 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 01:00:48 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 01:00:48 Europe/Berlin] Session status: 2
+[14-Jul-2025 01:00:48 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 01:00:48 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 24-07-2025
+    [permission_slot] => morning
+    [reason] => hhhhhhhhhhhh
+)
+
+[14-Jul-2025 01:00:48 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 01:00:48 Europe/Berlin] Unhandled exception: Missing required fields: Class adjustments in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 283
+[14-Jul-2025 01:02:37 Europe/Berlin] \n=== 2025-07-14 01:02:37 Error logging initialized ===
+[14-Jul-2025 01:02:37 Europe/Berlin] \n=== 2025-07-14 01:02:37 Script started ===
+[14-Jul-2025 01:02:37 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 01:02:37 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 01:02:37 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 01:02:37 Europe/Berlin] Session status: 2
+[14-Jul-2025 01:02:37 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 01:02:37 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 24-07-2025
+    [permission_slot] => morning
+    [reason] => hhhhhhhhhhhh
+)
+
+[14-Jul-2025 01:02:37 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 01:02:37 Europe/Berlin] Unhandled exception: Missing required fields: Class adjustments in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 283
+[14-Jul-2025 01:06:43 Europe/Berlin] \n=== 2025-07-14 01:06:43 Error logging initialized ===
+[14-Jul-2025 01:06:43 Europe/Berlin] \n=== 2025-07-14 01:06:43 Script started ===
+[14-Jul-2025 01:06:43 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 01:06:43 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 01:06:43 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 01:06:43 Europe/Berlin] Session status: 2
+[14-Jul-2025 01:06:43 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 01:06:43 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 22-07-2025
+    [permission_slot] => afternoon
+    [reason] => n error occurred while processing your request
+)
+
+[14-Jul-2025 01:06:43 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 01:06:43 Europe/Berlin] Unhandled exception: Missing required fields: Class adjustments in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 283
+[14-Jul-2025 01:12:28 Europe/Berlin] \n=== 2025-07-14 01:12:28 Error logging initialized ===
+[14-Jul-2025 01:12:28 Europe/Berlin] \n=== 2025-07-14 01:12:28 Script started ===
+[14-Jul-2025 01:12:28 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 01:12:28 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 01:12:28 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 01:12:28 Europe/Berlin] Session status: 2
+[14-Jul-2025 01:12:28 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 01:12:28 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 16-07-2025
+    [permission_slot] => morning
+    [reason] => An error occurred while processing your request
+)
+
+[14-Jul-2025 01:12:28 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 01:12:28 Europe/Berlin] Unhandled exception: Missing required fields: Class adjustments in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 283
+[14-Jul-2025 01:12:34 Europe/Berlin] \n=== 2025-07-14 01:12:34 Error logging initialized ===
+[14-Jul-2025 01:12:34 Europe/Berlin] \n=== 2025-07-14 01:12:34 Script started ===
+[14-Jul-2025 01:12:34 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 01:12:34 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 01:12:34 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 01:12:34 Europe/Berlin] Session status: 2
+[14-Jul-2025 01:12:34 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 01:12:34 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 16-07-2025
+    [permission_slot] => morning
+    [reason] => An error occurred while processing your request
+)
+
+[14-Jul-2025 01:12:34 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 01:12:34 Europe/Berlin] Unhandled exception: Missing required fields: Class adjustments in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 283
+[14-Jul-2025 01:26:51 Europe/Berlin] \n=== 2025-07-14 01:26:51 Error logging initialized ===
+[14-Jul-2025 01:26:51 Europe/Berlin] \n=== 2025-07-14 01:26:51 Script started ===
+[14-Jul-2025 01:26:51 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 01:26:51 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 01:26:51 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 01:26:51 Europe/Berlin] Session status: 2
+[14-Jul-2025 01:26:51 Europe/Berlin] Session ID: 4o01p840srdg82cvlchfat83gc
+[14-Jul-2025 01:26:51 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 01-08-2025
+    [permission_slot] => morning
+    [reason] => Initia
+    [adjustments] => [{"date":"16-07-2025","time":"9:30 AM - 10:20 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[14-Jul-2025 01:26:51 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 01:26:51 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 01:26:51 Europe/Berlin] Inserted leave application with ID: 25
+[14-Jul-2025 01:26:51 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 01:26:51 Europe/Berlin] Inserted class adjustment for faculty ID: 7 on 2025-07-16 at 9:30 AM - 10:20 AM
+[14-Jul-2025 01:26:51 Europe/Berlin] Failed to prepare notification statement: 
+[14-Jul-2025 08:15:23 Europe/Berlin] \n=== 2025-07-14 08:15:23 Error logging initialized ===
+[14-Jul-2025 08:15:23 Europe/Berlin] \n=== 2025-07-14 08:15:23 Script started ===
+[14-Jul-2025 08:15:23 Europe/Berlin] PHP Version: 8.0.30
+[14-Jul-2025 08:15:23 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 08:15:23 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 08:15:23 Europe/Berlin] Session status: 2
+[14-Jul-2025 08:15:23 Europe/Berlin] Session ID: iv8q25shr1c8g1jv9dgc6ikaek
+[14-Jul-2025 08:15:23 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 18-07-2025
+    [permission_slot] => morning
+    [reason] => Apply for Permission Leave
+    [adjustments] => [{"date":"18-07-2025","time":"8:40 AM - 9:30 AM","subject":"DL","faculty_id":"7"}]
+)
+
+[14-Jul-2025 08:15:23 Europe/Berlin] Session data: Array
+(
+    [user_id] => 5
+    [username] => CSMFACULTY1
+    [name] => CSM FACULTY1
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 08:15:23 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 08:15:23 Europe/Berlin] Inserted leave application with ID: 26
+[14-Jul-2025 08:15:23 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 08:15:23 Europe/Berlin] Inserted class adjustment for faculty ID: 7 on 2025-07-18 at 8:40 AM - 9:30 AM
+[14-Jul-2025 08:15:23 Europe/Berlin] Failed to prepare notification statement: 
+[14-Jul-2025 17:56:19 Europe/Berlin] \n=== 2025-07-14 17:56:19 Error logging initialized ===
+[14-Jul-2025 17:56:19 Europe/Berlin] \n=== 2025-07-14 17:56:19 Script started ===
+[14-Jul-2025 17:56:19 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 17:56:19 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 17:56:19 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 17:56:19 Europe/Berlin] Session status: 2
+[14-Jul-2025 17:56:19 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 17:56:19 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 17:56:19 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 17:56:19 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 17:56:19 Europe/Berlin] Inserted leave application with ID: 1
+[14-Jul-2025 17:56:19 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 17:56:19 Europe/Berlin] Unhandled exception: Unknown column 'class_date' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 17:56:21 Europe/Berlin] \n=== 2025-07-14 17:56:21 Error logging initialized ===
+[14-Jul-2025 17:56:21 Europe/Berlin] \n=== 2025-07-14 17:56:21 Script started ===
+[14-Jul-2025 17:56:21 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 17:56:21 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 17:56:21 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 17:56:21 Europe/Berlin] Session status: 2
+[14-Jul-2025 17:56:21 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 17:56:21 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 17:56:21 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 17:56:21 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 17:56:21 Europe/Berlin] Inserted leave application with ID: 2
+[14-Jul-2025 17:56:21 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 17:56:21 Europe/Berlin] Unhandled exception: Unknown column 'class_date' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 17:56:25 Europe/Berlin] \n=== 2025-07-14 17:56:25 Error logging initialized ===
+[14-Jul-2025 17:56:25 Europe/Berlin] \n=== 2025-07-14 17:56:25 Script started ===
+[14-Jul-2025 17:56:25 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 17:56:25 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 17:56:25 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 17:56:25 Europe/Berlin] Session status: 2
+[14-Jul-2025 17:56:25 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 17:56:25 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 17:56:25 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 17:56:25 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 17:56:25 Europe/Berlin] Inserted leave application with ID: 3
+[14-Jul-2025 17:56:25 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 17:56:25 Europe/Berlin] Unhandled exception: Unknown column 'class_date' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 17:56:25 Europe/Berlin] \n=== 2025-07-14 17:56:25 Error logging initialized ===
+[14-Jul-2025 17:56:25 Europe/Berlin] \n=== 2025-07-14 17:56:25 Script started ===
+[14-Jul-2025 17:56:25 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 17:56:25 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 17:56:25 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 17:56:25 Europe/Berlin] Session status: 2
+[14-Jul-2025 17:56:25 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 17:56:25 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 17:56:25 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 17:56:25 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 17:56:25 Europe/Berlin] Inserted leave application with ID: 4
+[14-Jul-2025 17:56:25 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 17:56:25 Europe/Berlin] Unhandled exception: Unknown column 'class_date' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 17:56:26 Europe/Berlin] \n=== 2025-07-14 17:56:26 Error logging initialized ===
+[14-Jul-2025 17:56:26 Europe/Berlin] \n=== 2025-07-14 17:56:26 Script started ===
+[14-Jul-2025 17:56:26 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 17:56:26 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 17:56:26 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 17:56:26 Europe/Berlin] Session status: 2
+[14-Jul-2025 17:56:26 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 17:56:26 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 17:56:26 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 17:56:26 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 17:56:26 Europe/Berlin] Inserted leave application with ID: 5
+[14-Jul-2025 17:56:26 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 17:56:26 Europe/Berlin] Unhandled exception: Unknown column 'class_date' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 17:56:48 Europe/Berlin] \n=== 2025-07-14 17:56:48 Error logging initialized ===
+[14-Jul-2025 17:56:48 Europe/Berlin] \n=== 2025-07-14 17:56:48 Script started ===
+[14-Jul-2025 17:56:48 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 17:56:48 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 17:56:48 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 17:56:48 Europe/Berlin] Session status: 2
+[14-Jul-2025 17:56:48 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 17:56:48 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 17:56:48 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 17:56:48 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 17:56:48 Europe/Berlin] Inserted leave application with ID: 6
+[14-Jul-2025 17:56:48 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 17:56:48 Europe/Berlin] Unhandled exception: Unknown column 'class_date' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:17:04 Europe/Berlin] \n=== 2025-07-14 18:17:04 Error logging initialized ===
+[14-Jul-2025 18:17:04 Europe/Berlin] \n=== 2025-07-14 18:17:04 Script started ===
+[14-Jul-2025 18:17:04 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:17:04 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:17:04 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:17:04 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:17:04 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:17:04 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:17:04 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:17:04 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:17:04 Europe/Berlin] Inserted leave application with ID: 8
+[14-Jul-2025 18:17:04 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:17:04 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:17:05 Europe/Berlin] \n=== 2025-07-14 18:17:05 Error logging initialized ===
+[14-Jul-2025 18:17:05 Europe/Berlin] \n=== 2025-07-14 18:17:05 Script started ===
+[14-Jul-2025 18:17:05 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:17:05 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:17:05 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:17:05 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:17:05 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:17:05 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:17:05 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:17:05 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:17:05 Europe/Berlin] Inserted leave application with ID: 9
+[14-Jul-2025 18:17:05 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:17:05 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:17:06 Europe/Berlin] \n=== 2025-07-14 18:17:06 Error logging initialized ===
+[14-Jul-2025 18:17:06 Europe/Berlin] \n=== 2025-07-14 18:17:06 Script started ===
+[14-Jul-2025 18:17:06 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:17:06 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:17:06 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:17:06 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:17:06 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:17:06 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:17:06 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:17:06 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:17:06 Europe/Berlin] Inserted leave application with ID: 10
+[14-Jul-2025 18:17:06 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:17:06 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:17:06 Europe/Berlin] \n=== 2025-07-14 18:17:06 Error logging initialized ===
+[14-Jul-2025 18:17:06 Europe/Berlin] \n=== 2025-07-14 18:17:06 Script started ===
+[14-Jul-2025 18:17:06 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:17:06 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:17:06 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:17:06 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:17:06 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:17:06 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital requirement
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:17:06 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:17:06 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:17:06 Europe/Berlin] Inserted leave application with ID: 11
+[14-Jul-2025 18:17:06 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:17:06 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:47:57 Europe/Berlin] \n=== 2025-07-14 18:47:57 Error logging initialized ===
+[14-Jul-2025 18:47:57 Europe/Berlin] \n=== 2025-07-14 18:47:57 Script started ===
+[14-Jul-2025 18:47:57 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:47:57 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:47:57 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:47:57 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:47:57 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:47:57 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:47:57 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:47:57 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:47:57 Europe/Berlin] Inserted leave application with ID: 12
+[14-Jul-2025 18:47:57 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:47:57 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:47:58 Europe/Berlin] \n=== 2025-07-14 18:47:58 Error logging initialized ===
+[14-Jul-2025 18:47:58 Europe/Berlin] \n=== 2025-07-14 18:47:58 Script started ===
+[14-Jul-2025 18:47:58 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:47:58 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:47:58 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:47:58 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:47:58 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:47:58 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:47:58 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:47:58 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:47:58 Europe/Berlin] Inserted leave application with ID: 13
+[14-Jul-2025 18:47:58 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:47:58 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:47:59 Europe/Berlin] \n=== 2025-07-14 18:47:59 Error logging initialized ===
+[14-Jul-2025 18:47:59 Europe/Berlin] \n=== 2025-07-14 18:47:59 Script started ===
+[14-Jul-2025 18:47:59 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:47:59 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:47:59 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:47:59 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:47:59 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:47:59 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:47:59 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:47:59 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:47:59 Europe/Berlin] Inserted leave application with ID: 14
+[14-Jul-2025 18:47:59 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:47:59 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:47:59 Europe/Berlin] \n=== 2025-07-14 18:47:59 Error logging initialized ===
+[14-Jul-2025 18:47:59 Europe/Berlin] \n=== 2025-07-14 18:47:59 Script started ===
+[14-Jul-2025 18:47:59 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:47:59 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:47:59 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:47:59 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:47:59 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:47:59 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:47:59 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:47:59 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:47:59 Europe/Berlin] Inserted leave application with ID: 15
+[14-Jul-2025 18:47:59 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:47:59 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:47:59 Europe/Berlin] \n=== 2025-07-14 18:47:59 Error logging initialized ===
+[14-Jul-2025 18:47:59 Europe/Berlin] \n=== 2025-07-14 18:47:59 Script started ===
+[14-Jul-2025 18:47:59 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:47:59 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:47:59 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:47:59 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:47:59 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:47:59 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:47:59 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:47:59 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:47:59 Europe/Berlin] Inserted leave application with ID: 16
+[14-Jul-2025 18:47:59 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:47:59 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:48:00 Europe/Berlin] \n=== 2025-07-14 18:48:00 Error logging initialized ===
+[14-Jul-2025 18:48:00 Europe/Berlin] \n=== 2025-07-14 18:48:00 Script started ===
+[14-Jul-2025 18:48:00 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:48:00 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:48:00 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:48:00 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:48:00 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:48:00 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:48:00 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:48:00 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:48:00 Europe/Berlin] Inserted leave application with ID: 17
+[14-Jul-2025 18:48:00 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:48:00 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:48:00 Europe/Berlin] \n=== 2025-07-14 18:48:00 Error logging initialized ===
+[14-Jul-2025 18:48:00 Europe/Berlin] \n=== 2025-07-14 18:48:00 Script started ===
+[14-Jul-2025 18:48:00 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:48:00 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:48:00 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:48:00 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:48:00 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:48:00 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:48:00 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:48:00 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:48:00 Europe/Berlin] Inserted leave application with ID: 18
+[14-Jul-2025 18:48:00 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:48:00 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:48:00 Europe/Berlin] \n=== 2025-07-14 18:48:00 Error logging initialized ===
+[14-Jul-2025 18:48:00 Europe/Berlin] \n=== 2025-07-14 18:48:00 Script started ===
+[14-Jul-2025 18:48:00 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:48:00 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:48:00 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:48:00 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:48:00 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:48:00 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:48:00 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:48:00 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:48:00 Europe/Berlin] Inserted leave application with ID: 19
+[14-Jul-2025 18:48:00 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:48:00 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:48:00 Europe/Berlin] \n=== 2025-07-14 18:48:00 Error logging initialized ===
+[14-Jul-2025 18:48:00 Europe/Berlin] \n=== 2025-07-14 18:48:00 Script started ===
+[14-Jul-2025 18:48:00 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:48:00 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:48:00 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:48:00 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:48:00 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:48:00 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:48:00 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:48:00 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:48:00 Europe/Berlin] Inserted leave application with ID: 20
+[14-Jul-2025 18:48:00 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:48:00 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:48:01 Europe/Berlin] \n=== 2025-07-14 18:48:01 Error logging initialized ===
+[14-Jul-2025 18:48:01 Europe/Berlin] \n=== 2025-07-14 18:48:01 Script started ===
+[14-Jul-2025 18:48:01 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:48:01 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:48:01 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:48:01 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:48:01 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:48:01 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:48:01 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:48:01 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:48:01 Europe/Berlin] Inserted leave application with ID: 21
+[14-Jul-2025 18:48:01 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:48:01 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:48:01 Europe/Berlin] \n=== 2025-07-14 18:48:01 Error logging initialized ===
+[14-Jul-2025 18:48:01 Europe/Berlin] \n=== 2025-07-14 18:48:01 Script started ===
+[14-Jul-2025 18:48:01 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:48:01 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:48:01 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:48:01 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:48:01 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:48:01 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:48:01 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:48:01 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:48:01 Europe/Berlin] Inserted leave application with ID: 22
+[14-Jul-2025 18:48:01 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:48:01 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:48:02 Europe/Berlin] \n=== 2025-07-14 18:48:02 Error logging initialized ===
+[14-Jul-2025 18:48:02 Europe/Berlin] \n=== 2025-07-14 18:48:02 Script started ===
+[14-Jul-2025 18:48:02 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:48:02 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:48:02 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:48:02 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:48:02 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:48:02 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"daa","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:48:02 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:48:02 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:48:02 Europe/Berlin] Inserted leave application with ID: 23
+[14-Jul-2025 18:48:02 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:48:02 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:05 Europe/Berlin] \n=== 2025-07-14 18:55:05 Error logging initialized ===
+[14-Jul-2025 18:55:05 Europe/Berlin] \n=== 2025-07-14 18:55:05 Script started ===
+[14-Jul-2025 18:55:05 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:05 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:05 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:05 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:05 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:05 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:05 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:05 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:05 Europe/Berlin] Inserted leave application with ID: 24
+[14-Jul-2025 18:55:05 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:05 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:10 Europe/Berlin] \n=== 2025-07-14 18:55:10 Error logging initialized ===
+[14-Jul-2025 18:55:10 Europe/Berlin] \n=== 2025-07-14 18:55:10 Script started ===
+[14-Jul-2025 18:55:10 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:10 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:10 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:10 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:10 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:10 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:10 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:10 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:10 Europe/Berlin] Inserted leave application with ID: 25
+[14-Jul-2025 18:55:10 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:10 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:13 Europe/Berlin] \n=== 2025-07-14 18:55:13 Error logging initialized ===
+[14-Jul-2025 18:55:13 Europe/Berlin] \n=== 2025-07-14 18:55:13 Script started ===
+[14-Jul-2025 18:55:13 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:13 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:13 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:13 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:13 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:13 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:13 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:13 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:13 Europe/Berlin] Inserted leave application with ID: 26
+[14-Jul-2025 18:55:13 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:13 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Error logging initialized ===
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Script started ===
+[14-Jul-2025 18:55:15 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:15 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:15 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:15 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:15 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:15 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:15 Europe/Berlin] Inserted leave application with ID: 27
+[14-Jul-2025 18:55:15 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:15 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Error logging initialized ===
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Script started ===
+[14-Jul-2025 18:55:15 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:15 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:15 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:15 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:15 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:15 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:15 Europe/Berlin] Inserted leave application with ID: 28
+[14-Jul-2025 18:55:15 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:15 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Error logging initialized ===
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Script started ===
+[14-Jul-2025 18:55:15 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:15 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:15 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:15 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:15 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:15 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:15 Europe/Berlin] Inserted leave application with ID: 29
+[14-Jul-2025 18:55:15 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:15 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Error logging initialized ===
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Script started ===
+[14-Jul-2025 18:55:15 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:15 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:15 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:15 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:15 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:15 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:15 Europe/Berlin] Inserted leave application with ID: 30
+[14-Jul-2025 18:55:15 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:15 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Error logging initialized ===
+[14-Jul-2025 18:55:15 Europe/Berlin] \n=== 2025-07-14 18:55:15 Script started ===
+[14-Jul-2025 18:55:15 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:15 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:15 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:15 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:15 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:15 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:15 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:15 Europe/Berlin] Inserted leave application with ID: 31
+[14-Jul-2025 18:55:15 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:15 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:16 Europe/Berlin] \n=== 2025-07-14 18:55:16 Error logging initialized ===
+[14-Jul-2025 18:55:16 Europe/Berlin] \n=== 2025-07-14 18:55:16 Script started ===
+[14-Jul-2025 18:55:16 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:16 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:16 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:16 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:16 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:16 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:16 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:16 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:16 Europe/Berlin] Inserted leave application with ID: 32
+[14-Jul-2025 18:55:16 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:16 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:16 Europe/Berlin] \n=== 2025-07-14 18:55:16 Error logging initialized ===
+[14-Jul-2025 18:55:16 Europe/Berlin] \n=== 2025-07-14 18:55:16 Script started ===
+[14-Jul-2025 18:55:16 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:16 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:16 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:16 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:16 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:16 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:16 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:16 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:16 Europe/Berlin] Inserted leave application with ID: 33
+[14-Jul-2025 18:55:16 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:16 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:16 Europe/Berlin] \n=== 2025-07-14 18:55:16 Error logging initialized ===
+[14-Jul-2025 18:55:16 Europe/Berlin] \n=== 2025-07-14 18:55:16 Script started ===
+[14-Jul-2025 18:55:16 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:16 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:16 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:16 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:16 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:16 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:16 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:16 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:16 Europe/Berlin] Inserted leave application with ID: 34
+[14-Jul-2025 18:55:16 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:16 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:17 Europe/Berlin] \n=== 2025-07-14 18:55:17 Error logging initialized ===
+[14-Jul-2025 18:55:17 Europe/Berlin] \n=== 2025-07-14 18:55:17 Script started ===
+[14-Jul-2025 18:55:17 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:17 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:17 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:17 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:17 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:17 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:17 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:17 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:17 Europe/Berlin] Inserted leave application with ID: 35
+[14-Jul-2025 18:55:17 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:17 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
+[14-Jul-2025 18:55:17 Europe/Berlin] \n=== 2025-07-14 18:55:17 Error logging initialized ===
+[14-Jul-2025 18:55:17 Europe/Berlin] \n=== 2025-07-14 18:55:17 Script started ===
+[14-Jul-2025 18:55:17 Europe/Berlin] PHP Version: 8.2.12
+[14-Jul-2025 18:55:17 Europe/Berlin] Current directory: C:\xampp\htdocs\faculty_leave_system
+[14-Jul-2025 18:55:17 Europe/Berlin] Log file: C:\xampp\htdocs\faculty_leave_system\logs\php_errors.log
+[14-Jul-2025 18:55:17 Europe/Berlin] Session status: 2
+[14-Jul-2025 18:55:17 Europe/Berlin] Session ID: kmqh3kcfu5bhiqmgpiqf4kjrv1
+[14-Jul-2025 18:55:17 Europe/Berlin] POST data: Array
+(
+    [is_permission] => 1
+    [permission_date] => 15-07-2025
+    [permission_slot] => morning
+    [reason] => hospital
+    [adjustments] => [{"date":"15-07-2025","time":"8:40 AM - 9:30 AM","subject":"bd","faculty_id":"5"}]
+)
+
+[14-Jul-2025 18:55:17 Europe/Berlin] Session data: Array
+(
+    [user_id] => 4
+    [username] => Srivani
+    [name] => SRIVANI POKKULURI
+    [role] => faculty
+    [dept_id] => 7
+)
+
+[14-Jul-2025 18:55:17 Europe/Berlin] Starting database transaction...
+[14-Jul-2025 18:55:17 Europe/Berlin] Inserted leave application with ID: 36
+[14-Jul-2025 18:55:17 Europe/Berlin] Preparing SQL: INSERT INTO class_adjustments 
+                (application_id, class_date, class_time, subject, adjusted_by, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')
+[14-Jul-2025 18:55:17 Europe/Berlin] Unhandled exception: Unknown column 'class_time' in 'field list' in C:\xampp\htdocs\faculty_leave_system\process_permission_leave.php on line 351
